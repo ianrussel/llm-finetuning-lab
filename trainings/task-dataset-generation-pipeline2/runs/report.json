@@ -1,0 +1,95 @@
+{
+  "config": {
+    "name": "helpdesk-resolution",
+    "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "data": {
+      "dir": "../task-dataset-generation-pipeline1/data",
+      "probes_dir": "../task-dataset-generation-pipeline1/eval",
+      "task_train": "train_mix.jsonl",
+      "task_train_noreplay": "train_synth.jsonl",
+      "gold": "gold.jsonl",
+      "labels": "labels.txt",
+      "sentinel": "sentinel.jsonl",
+      "reasoning_probes": "reasoning_probes.jsonl",
+      "tool_probes": "tool_probes.jsonl"
+    },
+    "lora": {
+      "rank": 16,
+      "alpha": 32,
+      "dropout": 0.05,
+      "target_modules": "all-linear"
+    },
+    "train": {
+      "epochs": 6,
+      "learning_rate": 0.0002,
+      "max_seq_len": 1408,
+      "batch_size": 1,
+      "grad_accum": 16,
+      "use_qlora": true,
+      "early_stopping": {
+        "enabled": true,
+        "patience": 1,
+        "min_task_delta": 0.005,
+        "regression_tolerance": 0.05,
+        "eval_task_limit": 96,
+        "eval_batch": 8
+      }
+    },
+    "guardrails": {
+      "replay_mix": true
+    },
+    "acceptance": {
+      "min_task_gain_macro_f1": 0.05,
+      "max_regression_drop": 0.05
+    },
+    "adjust_on_fail": {
+      "force_replay": true,
+      "lower_lr_factor": 0.5,
+      "reduce_epochs_to": 2
+    },
+    "output_dir": "runs",
+    "confirmed": true
+  },
+  "base": {
+    "task": {
+      "n": 200,
+      "accuracy": 0.52,
+      "macro_f1": 0.423007573025604,
+      "valid_label_rate": 1.0
+    },
+    "sentinel": {
+      "n": 12,
+      "score": 0.9166666666666666
+    },
+    "reasoning": {
+      "n": 10,
+      "score": 0.8
+    },
+    "tools": {
+      "n": 8,
+      "score": 0.75
+    }
+  },
+  "attempts": [
+    {
+      "run": "helpdesk-resolution-replay",
+      "adapter": "/home/ianrussel/projects/ait-lab/ai_training/trainings/task-dataset-generation-pipeline2/runs/helpdesk-resolution-replay",
+      "verdict": {
+        "accept": true,
+        "task_gain": 0.0644,
+        "worst_regression_drop": 0.0,
+        "regressions": {
+          "sentinel": 0.0178,
+          "reasoning": 0.0667,
+          "tools": 0.1167
+        },
+        "fail_axis": [],
+        "reasons": [
+          "task macro-F1 gain +0.064 vs min +0.050 -> PASS",
+          "worst regression drop 0.000 vs max 0.050 -> PASS"
+        ]
+      }
+    }
+  ],
+  "accepted_adapter": "/home/ianrussel/projects/ait-lab/ai_training/trainings/task-dataset-generation-pipeline2/runs/helpdesk-resolution-replay"
+}

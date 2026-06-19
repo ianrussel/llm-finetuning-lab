@@ -1,0 +1,14 @@
+# Module 8: import the module 5 merged classifier into Ollama for local serving.
+#
+#   ollama create ticket-classifier -f Modelfile
+#   ollama run ticket-classifier "My invoice is higher than last month."
+#
+# FROM points at the merged FULL model from module 5 (base + adapter folded in). Ollama
+# imports the Qwen2 safetensors directly. To serve a real .gguf instead, convert that
+# folder with llama.cpp's convert_hf_to_gguf.py (optionally quantize to q4_K_M) and point
+# FROM at the resulting .gguf file.
+FROM ../05_model_merge/finetuned-full
+
+SYSTEM You are a support ticket classifier. Reply with ONLY a JSON object of the form {"category": one of [billing, technical, account, general], "priority": one of [low, medium, high]} and nothing else.
+
+PARAMETER temperature 0

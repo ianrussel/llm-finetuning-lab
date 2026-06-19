@@ -1,0 +1,64 @@
+{
+  "task": "resolution_binary",
+  "review_me": "Fields/states in leakage_exclude, workflow.exclude_states, and history.exclude_terminal_status are REMOVED from the model's input so it cannot cheat. Everything else is used as a feature. Edit these exclude lists if needed, then set confirmed=true.",
+  "leakage_exclude": [
+    "ended",
+    "id",
+    "issue_assignee",
+    "issue_created",
+    "issue_num",
+    "issue_reporter",
+    "issue_resolution",
+    "issue_resolution_date",
+    "issue_status",
+    "last_change_date",
+    "started"
+  ],
+  "workflow": {
+    "exclude_states": [
+      "cancelled",
+      "closed",
+      "done",
+      "rejected"
+    ],
+    "top_k": 12
+  },
+  "history": {
+    "exclude_terminal_status": [
+      "cancelled",
+      "closed",
+      "done",
+      "rejected",
+      "resolved",
+      "validation"
+    ]
+  },
+  "include_utterances": false,
+  "model_proposal": {
+    "predictive": [
+      "issue_type",
+      "issue_priority",
+      "issue_contr_count",
+      "issue_comments_count",
+      "processing_steps",
+      "wf_open",
+      "wf_waiting",
+      "wf_in_progress",
+      "wf_validation",
+      "wf_under_review",
+      "wf_approved",
+      "wf_done",
+      "wf_closed",
+      "wf_monitoring",
+      "wf_resolved",
+      "total_handling_time",
+      "assignee_turns"
+    ],
+    "leakage": [
+      "issue_resolution_date",
+      "issue_resolution"
+    ],
+    "notes": "Fields marked as leakage are known after the outcome is determined."
+  },
+  "confirmed": false
+}

@@ -1,0 +1,31 @@
+# Core fine-tuning stack for train_lora.py
+transformers
+peft
+datasets
+trl
+accelerate
+
+# QLoRA 4-bit support (needs an NVIDIA/CUDA GPU)
+bitsandbytes
+
+# Module 4: embedding model fine-tuning and retrieval
+sentence-transformers
+
+# Module 5: model merging
+mergekit==0.1.4
+
+# Module 6: multimodal (VLM) fine-tuning.
+# Pillow draws the synthetic images; num2words is required by the SmolVLM/Idefics3
+# processor. torchvision is below, pinned next to torch.
+Pillow
+num2words
+
+# PyTorch + torchvision, pinned to the CUDA 12.4 build on purpose.
+# A plain "pip install torch" grabs the newest wheel (cu130), which is too new
+# for this machine's driver (535 / CUDA 12.2) and makes the GPU disappear.
+# torchvision must match the torch version exactly and is required by the
+# transformers 5.x image processors used in module 6.
+# The extra index is where the +cu124 wheels live.
+--extra-index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0+cu124
+torchvision==0.21.0+cu124

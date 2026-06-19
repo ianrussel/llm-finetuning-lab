@@ -1,0 +1,41 @@
+{
+  "run_name": "helpdesk-resolution-replay",
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "data": "/home/ianrussel/projects/ait-lab/ai_training/trainings/task-dataset-generation-pipeline1/data/train_mix.jsonl",
+  "max_epochs": 6,
+  "lr": 0.0002,
+  "max_len": 1408,
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": "all-linear"
+  },
+  "final_train_loss": 1.0801230208915578,
+  "early_stopping": true,
+  "best_epoch": 2,
+  "stop_reason": "regression axis fell 0.117 below its best (> tol 0.050) at epoch 3",
+  "epoch_history": [
+    {
+      "epoch": 1,
+      "task": 0.3739,
+      "sentinel": 0.8852,
+      "reasoning": 0.7833,
+      "tools": 0.35
+    },
+    {
+      "epoch": 2,
+      "task": 0.4202,
+      "sentinel": 0.8525,
+      "reasoning": 0.8833,
+      "tools": 0.35
+    },
+    {
+      "epoch": 3,
+      "task": 0.417,
+      "sentinel": 0.8525,
+      "reasoning": 0.7667,
+      "tools": 0.3833
+    }
+  ]
+}

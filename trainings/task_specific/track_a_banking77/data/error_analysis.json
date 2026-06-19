@@ -1,0 +1,275 @@
+{
+  "preds": "/home/ianrussel/projects/ait-lab/ai_training/trainings/task_specific/track_a_banking77/data/preds_seed-synth.jsonl",
+  "min_f1": 0.8,
+  "weakest_intents": [
+    {
+      "intent": "topping_up_by_card",
+      "f1": 0.16666666666666669,
+      "recall": 0.1,
+      "precision": 0.5,
+      "support": 20,
+      "top_confuser": "transfer_into_account",
+      "n_to_confuser": 4,
+      "n_abstain": 3
+    },
+    {
+      "intent": "transfer_not_received_by_recipient",
+      "f1": 0.3333333333333333,
+      "recall": 0.25,
+      "precision": 0.5,
+      "support": 20,
+      "top_confuser": "transfer_timing",
+      "n_to_confuser": 4,
+      "n_abstain": 2
+    },
+    {
+      "intent": "top_up_by_bank_transfer_charge",
+      "f1": 0.37209302325581395,
+      "recall": 0.4,
+      "precision": 0.34782608695652173,
+      "support": 20,
+      "top_confuser": "exchange_via_app",
+      "n_to_confuser": 4,
+      "n_abstain": 0
+    },
+    {
+      "intent": "card_payment_not_recognised",
+      "f1": 0.5,
+      "recall": 0.4,
+      "precision": 0.6666666666666666,
+      "support": 20,
+      "top_confuser": "direct_debit_payment_not_recognised",
+      "n_to_confuser": 4,
+      "n_abstain": 0
+    },
+    {
+      "intent": "balance_not_updated_after_bank_transfer",
+      "f1": 0.5,
+      "recall": 0.45,
+      "precision": 0.5625,
+      "support": 20,
+      "top_confuser": "pending_transfer",
+      "n_to_confuser": 5,
+      "n_abstain": 0
+    },
+    {
+      "intent": "supported_cards_and_currencies",
+      "f1": 0.5238095238095238,
+      "recall": 0.55,
+      "precision": 0.5,
+      "support": 20,
+      "top_confuser": "fiat_currency_support",
+      "n_to_confuser": 5,
+      "n_abstain": 0
+    },
+    {
+      "intent": "card_arrival",
+      "f1": 0.55,
+      "recall": 0.55,
+      "precision": 0.55,
+      "support": 20,
+      "top_confuser": "lost_or_stolen_card",
+      "n_to_confuser": 7,
+      "n_abstain": 0
+    },
+    {
+      "intent": "card_payment_wrong_exchange_rate",
+      "f1": 0.5714285714285715,
+      "recall": 0.4,
+      "precision": 1.0,
+      "support": 20,
+      "top_confuser": "wrong_exchange_rate_for_cash_withdrawal",
+      "n_to_confuser": 11,
+      "n_abstain": 0
+    },
+    {
+      "intent": "disposable_card_limits",
+      "f1": 0.6206896551724138,
+      "recall": 0.45,
+      "precision": 1.0,
+      "support": 20,
+      "top_confuser": "get_disposable_virtual_card",
+      "n_to_confuser": 9,
+      "n_abstain": 0
+    },
+    {
+      "intent": "wrong_exchange_rate_for_cash_withdrawal",
+      "f1": 0.6250000000000001,
+      "recall": 0.75,
+      "precision": 0.5357142857142857,
+      "support": 20,
+      "top_confuser": "exchange_rate",
+      "n_to_confuser": 3,
+      "n_abstain": 0
+    },
+    {
+      "intent": "get_physical_card",
+      "f1": 0.6451612903225806,
+      "recall": 0.5,
+      "precision": 0.9090909090909091,
+      "support": 20,
+      "top_confuser": "change_pin",
+      "n_to_confuser": 5,
+      "n_abstain": 0
+    },
+    {
+      "intent": "card_delivery_estimate",
+      "f1": 0.6486486486486486,
+      "recall": 0.6,
+      "precision": 0.7058823529411765,
+      "support": 20,
+      "top_confuser": "card_arrival",
+      "n_to_confuser": 5,
+      "n_abstain": 0
+    }
+  ],
+  "confusable_pairs": [
+    {
+      "a": "card_payment_wrong_exchange_rate",
+      "b": "wrong_exchange_rate_for_cash_withdrawal",
+      "a_to_b": 11,
+      "b_to_a": 0,
+      "total": 11
+    },
+    {
+      "a": "disposable_card_limits",
+      "b": "get_disposable_virtual_card",
+      "a_to_b": 9,
+      "b_to_a": 0,
+      "total": 9
+    },
+    {
+      "a": "balance_not_updated_after_bank_transfer",
+      "b": "pending_transfer",
+      "a_to_b": 5,
+      "b_to_a": 2,
+      "total": 7
+    },
+    {
+      "a": "card_arrival",
+      "b": "lost_or_stolen_card",
+      "a_to_b": 7,
+      "b_to_a": 0,
+      "total": 7
+    },
+    {
+      "a": "balance_not_updated_after_bank_transfer",
+      "b": "transfer_not_received_by_recipient",
+      "a_to_b": 3,
+      "b_to_a": 3,
+      "total": 6
+    },
+    {
+      "a": "card_arrival",
+      "b": "card_delivery_estimate",
+      "a_to_b": 1,
+      "b_to_a": 5,
+      "total": 6
+    },
+    {
+      "a": "card_payment_not_recognised",
+      "b": "direct_debit_payment_not_recognised",
+      "a_to_b": 4,
+      "b_to_a": 2,
+      "total": 6
+    },
+    {
+      "a": "exchange_via_app",
+      "b": "fiat_currency_support",
+      "a_to_b": 0,
+      "b_to_a": 6,
+      "total": 6
+    },
+    {
+      "a": "unable_to_verify_identity",
+      "b": "verify_my_identity",
+      "a_to_b": 1,
+      "b_to_a": 5,
+      "total": 6
+    },
+    {
+      "a": "beneficiary_not_allowed",
+      "b": "failed_transfer",
+      "a_to_b": 5,
+      "b_to_a": 0,
+      "total": 5
+    },
+    {
+      "a": "declined_card_payment",
+      "b": "declined_transfer",
+      "a_to_b": 0,
+      "b_to_a": 5,
+      "total": 5
+    },
+    {
+      "a": "change_pin",
+      "b": "get_physical_card",
+      "a_to_b": 0,
+      "b_to_a": 5,
+      "total": 5
+    }
+  ],
+  "targets": [
+    {
+      "intent": "topping_up_by_card",
+      "confuser": "transfer_into_account",
+      "n_missed": 4
+    },
+    {
+      "intent": "transfer_not_received_by_recipient",
+      "confuser": "transfer_timing",
+      "n_missed": 4
+    },
+    {
+      "intent": "top_up_by_bank_transfer_charge",
+      "confuser": "exchange_via_app",
+      "n_missed": 4
+    },
+    {
+      "intent": "card_payment_not_recognised",
+      "confuser": "direct_debit_payment_not_recognised",
+      "n_missed": 4
+    },
+    {
+      "intent": "balance_not_updated_after_bank_transfer",
+      "confuser": "pending_transfer",
+      "n_missed": 5
+    },
+    {
+      "intent": "supported_cards_and_currencies",
+      "confuser": "fiat_currency_support",
+      "n_missed": 5
+    },
+    {
+      "intent": "card_arrival",
+      "confuser": "lost_or_stolen_card",
+      "n_missed": 7
+    },
+    {
+      "intent": "card_payment_wrong_exchange_rate",
+      "confuser": "wrong_exchange_rate_for_cash_withdrawal",
+      "n_missed": 11
+    },
+    {
+      "intent": "disposable_card_limits",
+      "confuser": "get_disposable_virtual_card",
+      "n_missed": 9
+    },
+    {
+      "intent": "wrong_exchange_rate_for_cash_withdrawal",
+      "confuser": "exchange_rate",
+      "n_missed": 3
+    },
+    {
+      "intent": "get_physical_card",
+      "confuser": "change_pin",
+      "n_missed": 5
+    },
+    {
+      "intent": "card_delivery_estimate",
+      "confuser": "card_arrival",
+      "n_missed": 5
+    }
+  ],
+  "abstain_total": 15
+}

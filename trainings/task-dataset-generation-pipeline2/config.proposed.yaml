@@ -1,0 +1,44 @@
+# Proposed by propose_config.py (rules over the dataset). Review, then
+# copy the values you accept into config.yaml and set confirmed: true.
+name: helpdesk-resolution
+base_model: Qwen/Qwen2.5-0.5B-Instruct
+data:
+  dir: ../task-dataset-generation-pipeline1/data
+  probes_dir: ../task-dataset-generation-pipeline1/eval
+  task_train: train_mix.jsonl
+  task_train_noreplay: train_synth.jsonl
+  gold: gold.jsonl
+  labels: labels.txt
+  sentinel: sentinel.jsonl
+  reasoning_probes: reasoning_probes.jsonl
+  tool_probes: tool_probes.jsonl
+lora:
+  rank: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: all-linear
+train:
+  epochs: 6
+  learning_rate: 0.0002
+  max_seq_len: 1408
+  batch_size: 1
+  grad_accum: 16
+  use_qlora: true
+  early_stopping:
+    enabled: true
+    patience: 1
+    min_task_delta: 0.005
+    regression_tolerance: 0.05
+    eval_task_limit: 96
+    eval_batch: 8
+guardrails:
+  replay_mix: true
+acceptance:
+  min_task_gain_macro_f1: 0.05
+  max_regression_drop: 0.05
+adjust_on_fail:
+  force_replay: true
+  lower_lr_factor: 0.5
+  reduce_epochs_to: 2
+output_dir: runs
+confirmed: false

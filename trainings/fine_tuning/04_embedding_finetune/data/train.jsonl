@@ -1,0 +1,18 @@
+{"query": "How do I change the card you charge me on?", "positive_id": "update-card"}
+{"query": "Where do I get a copy of my old bills?", "positive_id": "invoices"}
+{"query": "I want to stop my subscription", "positive_id": "cancel-subscription"}
+{"query": "How can I make my login more secure with a code?", "positive_id": "enable-2fa"}
+{"query": "Can I download all my data?", "positive_id": "export-data"}
+{"query": "How do I add a coworker to my account?", "positive_id": "add-teammate"}
+{"query": "Can I get my money back?", "positive_id": "refund-policy"}
+{"query": "Is there an app for my phone?", "positive_id": "mobile-app"}
+{"query": "Where are the developer docs?", "positive_id": "api-docs"}
+{"query": "How do I switch to a dark theme?", "positive_id": "dark-mode"}
+{"query": "What time can I reach support?", "positive_id": "support-hours"}
+{"query": "I need to update my email address", "positive_id": "change-email"}
+{"query": "How do I permanently close my account?", "positive_id": "delete-account"}
+{"query": "How do I move to a different pricing plan?", "positive_id": "upgrade-plan"}
+{"query": "How do I hook this up to Slack?", "positive_id": "slack-integration"}
+{"query": "The site will not let me sign in", "positive_id": "login-troubleshoot"}
+{"query": "How do I turn off email alerts?", "positive_id": "notifications"}
+{"query": "How do I reset my password?", "positive_id": "reset-password"}

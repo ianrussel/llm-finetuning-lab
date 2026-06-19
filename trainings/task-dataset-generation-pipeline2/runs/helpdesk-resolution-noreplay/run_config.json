@@ -1,0 +1,15 @@
+{
+  "run_name": "helpdesk-resolution-noreplay",
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "data": "/home/ianrussel/projects/ait-lab/ai_training/trainings/task-dataset-generation-pipeline1/data/train_synth.jsonl",
+  "epochs": 3,
+  "lr": 0.0002,
+  "max_len": 1408,
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": "all-linear"
+  },
+  "final_train_loss": 1.4405303852898734
+}

@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "primitives-demo": {
+      "type": "stdio",
+      "command": "python",
+      "args": [
+        "/ABSOLUTE/PATH/TO/trainings/mcp/module03_resources_and_prompts/server.py"
+      ]
+    },
+    "helpdesk": {
+      "type": "stdio",
+      "command": "python",
+      "args": [
+        "/ABSOLUTE/PATH/TO/trainings/mcp/module05_build_your_own_helpdesk/server.py"
+      ],
+      "env": {
+        "HELPDESK_CSV": "/ABSOLUTE/PATH/TO/trainings/task dataset generation pipeline/issues.csv"
+      }
+    },
+    "example-remote-http": {
+      "type": "http",
+      "url": "https://mcp.example.com/mcp"
+    }
+  }
+}

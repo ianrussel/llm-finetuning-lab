@@ -1,0 +1,8 @@
+{"query": "My credit card expired, how do I put in a new one?", "positive_id": "update-card"}
+{"query": "Send me last month's invoice", "positive_id": "invoices"}
+{"query": "Cancel my plan please", "positive_id": "cancel-subscription"}
+{"query": "Set up 2FA on my account", "positive_id": "enable-2fa"}
+{"query": "I can't sign into my account", "positive_id": "login-troubleshoot"}
+{"query": "Add another user to my team", "positive_id": "add-teammate"}
+{"query": "Do you have an Android app?", "positive_id": "mobile-app"}
+{"query": "How do I get a refund?", "positive_id": "refund-policy"}

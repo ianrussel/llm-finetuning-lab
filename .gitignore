@@ -1,0 +1,29 @@
+.venv/
+__pycache__/
+*.pyc
+lora-out/
+resume
+Profile_*
+tools
+
+# Model weights & training artifacts (regenerable, too large for git)
+*.safetensors
+*.pt
+*.pth
+*.bin
+*.gguf
+*.onnx
+
+# HuggingFace tokenizer/vocab files written into model output dirs
+tokenizer.json
+vocab.json
+merges.txt
+
+# HuggingFace Trainer checkpoints (optimizer/scheduler/rng state)
+checkpoint-*/
+
+# Full-size merge + fine-tune output dirs
+trainings/fine_tuning/05_model_merge/finetuned-full/
+trainings/fine_tuning/05_model_merge/merged-*/
+trainings/fine_tuning/04_embedding_finetune/embed-out/
+trainings/fine_tuning/06_multimodal_finetune/vlm-lora/

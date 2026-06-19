@@ -1,0 +1,284 @@
+{
+  "name": "base",
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "adapter": null,
+  "task": {
+    "n": 200,
+    "accuracy": 0.52,
+    "macro_f1": 0.423007573025604,
+    "valid_label_rate": 1.0
+  },
+  "sentinel": {
+    "n": 12,
+    "score": 0.9166666666666666,
+    "probes": [
+      {
+        "q": "What is the capital of France?",
+        "want": [
+          "paris"
+        ],
+        "got": "The capital of France is Paris.",
+        "hit": true
+      },
+      {
+        "q": "What is 7 times 8?",
+        "want": [
+          "56"
+        ],
+        "got": "7 times 8 equals 56.",
+        "hit": true
+      },
+      {
+        "q": "Who wrote the play Romeo and Juliet?",
+        "want": [
+          "shakespeare"
+        ],
+        "got": "The play \"Romeo and Juliet\" was written by William Shakespeare. He lived from 1564 to 1616 and is considered",
+        "hit": true
+      },
+      {
+        "q": "What is the chemical symbol for water?",
+        "want": [
+          "h2o"
+        ],
+        "got": "The chemical symbol for water is H2O.",
+        "hit": true
+      },
+      {
+        "q": "How many continents are there on Earth?",
+        "want": [
+          "7",
+          "seven"
+        ],
+        "got": "There are 5 major continents on Earth: Asia, Africa, North America, South America, and Europe. Each continent is further divided into several smaller regions or",
+        "hit": false
+      },
+      {
+        "q": "What planet is known as the Red Planet?",
+        "want": [
+          "mars"
+        ],
+        "got": "The planet known as the \"Red Planet\" is Mars. It was named after the Roman god of war and the god of the underworld, Mars. The red",
+        "hit": true
+      },
+      {
+        "q": "What is the largest ocean on Earth?",
+        "want": [
+          "pacific"
+        ],
+        "got": "The largest ocean on Earth is the Pacific Ocean. It covers about 71% of the Earth's surface and has an area of approximately 41 million",
+        "hit": true
+      },
+      {
+        "q": "In what year did World War II end?",
+        "want": [
+          "1945"
+        ],
+        "got": "World War II ended on September 2, 1945, in the port city of Hiroshima, Japan. This was the last major military conflict",
+        "hit": true
+      },
+      {
+        "q": "What gas do plants absorb from the air during photosynthesis?",
+        "want": [
+          "carbon dioxide",
+          "co2"
+        ],
+        "got": "Plants absorb carbon dioxide (CO2) from the air during photosynthesis. This process is known as cellular respiration and occurs in the chloroplasts of",
+        "hit": true
+      },
+      {
+        "q": "What is the square root of 144?",
+        "want": [
+          "12"
+        ],
+        "got": "The square root of 144 is 12. This can be determined through various methods:\n\n1. **Direct Calculation**: The number 14",
+        "hit": true
+      },
+      {
+        "q": "What language is mainly spoken in Brazil?",
+        "want": [
+          "portuguese"
+        ],
+        "got": "Brazilian Portuguese is the most widely spoken language in Brazil. It is also one of the official languages of the country and is used for formal communication,",
+        "hit": true
+      },
+      {
+        "q": "How do you say 'hello' in Spanish?",
+        "want": [
+          "hola"
+        ],
+        "got": "\"Hello\" in Spanish is \"Hola\".",
+        "hit": true
+      }
+    ]
+  },
+  "reasoning": {
+    "n": 10,
+    "score": 0.8,
+    "probes": [
+      {
+        "q": "A train travels 60 km in 1.5 hours. What is its average speed in km/h?",
+        "want": [
+          "40"
+        ],
+        "got": "To calculate the average speed of the train, we use the formula for average speed:\n\n\\[\n\\text{Average Speed} = \\frac{\\text{Total Distance}}{\\text{Total Time}}\n\\]",
+        "hit": true
+      },
+      {
+        "q": "If a shirt costs 20 dollars and is discounted by 25 percent, what is the sale price in dollars?",
+        "want": [
+          "15"
+        ],
+        "got": "To calculate the sale price of the shirt after a 25% discount, you can follow these steps:\n\n1. **Calculate the amount of the discount:**\n   - The original cost ",
+        "hit": true
+      },
+      {
+        "q": "Natalia sold 48 clips in April and half as many in May. How many clips did she sell in total?",
+        "want": [
+          "72"
+        ],
+        "got": "To determine the total number of clips Natalia sold over the two months, we need to follow these steps:\n\n1. Identify the number of clips sold in April.\n2. Calcu",
+        "hit": true
+      },
+      {
+        "q": "There are 3 boxes with 12 apples each. If 10 apples are removed in total, how many apples remain?",
+        "want": [
+          "26"
+        ],
+        "got": "To determine the number of apples remaining after removing 10 apples from 3 boxes with 12 apples each, we can follow these steps:\n\n1. Calculate the total number",
+        "hit": true
+      },
+      {
+        "q": "A tank holds 200 liters and is 40 percent full. How many liters are in the tank?",
+        "want": [
+          "80"
+        ],
+        "got": "To determine how many liters are in the tank when it is 40 percent full, we can follow these steps:\n\n1. Identify the total capacity of the tank.\n   The tank hol",
+        "hit": true
+      },
+      {
+        "q": "If today is Wednesday, what day of the week will it be in 10 days?",
+        "want": [
+          "saturday"
+        ],
+        "got": "To determine what day of the week it will be 10 days from today (Wednesday) in 10 days, we can follow these steps:\n\n1. **Understand the pattern**: The days of t",
+        "hit": false
+      },
+      {
+        "q": "A rectangle is 8 cm long and 5 cm wide. What is its area in square centimeters?",
+        "want": [
+          "40"
+        ],
+        "got": "The area of a rectangle can be calculated using the formula:\n\n\\[ \\text{Area} = \\text{length} \\times \\text{width} \\]\n\nGiven that the length of the rectangle is 8",
+        "hit": true
+      },
+      {
+        "q": "Sam reads 15 pages a day. How many pages does he read in 2 weeks?",
+        "want": [
+          "210"
+        ],
+        "got": "To determine how many pages Sam reads in 2 weeks, we need to follow these steps:\n\n1. Calculate the number of days in 2 weeks.\n2. Multiply the number of days by ",
+        "hit": true
+      },
+      {
+        "q": "If 5 workers build a wall in 6 days, how many worker-days does the wall take?",
+        "want": [
+          "30"
+        ],
+        "got": "To determine how many worker-days the wall takes to be built, we need to follow these steps:\n\n1. **Calculate the total number of worker-days required:**\n   - We",
+        "hit": false
+      },
+      {
+        "q": "A number doubled and then increased by 3 equals 11. What is the number?",
+        "want": [
+          "4"
+        ],
+        "got": "Let's denote the unknown number as \\( x \\).\n\nAccording to the problem statement, we have:\n\\[ 2x + 3 = 11 \\]\n\nTo find the value of \\( x \\), we need to solve this",
+        "hit": true
+      }
+    ]
+  },
+  "tools": {
+    "n": 8,
+    "score": 0.75,
+    "probes": [
+      {
+        "q": "You can call get_weather(city). Get the weather for Paris. Reply with the function call.",
+        "want": [
+          "get_weather",
+          "paris"
+        ],
+        "got": "get_weather(\"Paris\")",
+        "hit": true
+      },
+      {
+        "q": "You can call add(a, b). Use it to add 12 and 30. Reply with the function call.",
+        "want": [
+          "add",
+          "12",
+          "30"
+        ],
+        "got": "To solve this problem using Python, you would use the `add` function from the `math` module. Here's how you can do it:\n\n```python\nimport math\n\nresult = math.add",
+        "hit": true
+      },
+      {
+        "q": "You can call send_email(to, subject). Email alice@example.com with subject Hello. Reply with the function call.",
+        "want": [
+          "send_email",
+          "alice@example.com",
+          "hello"
+        ],
+        "got": "To send an email using Python's `smtplib` library and `email.mime.text` for the body of the email, you would typically use something like this:\n\n```python\nimpor",
+        "hit": false
+      },
+      {
+        "q": "You can call search(query). Search for python tutorials. Reply with the function call.",
+        "want": [
+          "search",
+          "python tutorials"
+        ],
+        "got": "To find Python tutorials, I will use the following function:\n\n```python\nsearch(\"Python tutorials\")\n```\n\nThis function will return a list of URLs where you can f",
+        "hit": true
+      },
+      {
+        "q": "You can call convert_currency(amount, from, to). Convert 100 USD to EUR. Reply with the function call.",
+        "want": [
+          "convert_currency",
+          "100",
+          "usd",
+          "eur"
+        ],
+        "got": "To convert 100 USD to EUR using the `convert_currency` function, you would use the following code:\n\n```python\nconvert_currency(100, \"USD\", \"EUR\")\n```\n\nThis will",
+        "hit": true
+      },
+      {
+        "q": "You can call set_timer(minutes). Set a timer for 5 minutes. Reply with the function call.",
+        "want": [
+          "set_timer",
+          "5"
+        ],
+        "got": "set_timer(5)",
+        "hit": true
+      },
+      {
+        "q": "You can call get_stock(symbol). Get the stock price for AAPL. Reply with the function call.",
+        "want": [
+          "get_stock",
+          "aapl"
+        ],
+        "got": "get_stock(\"AAPL\")",
+        "hit": true
+      },
+      {
+        "q": "You can call translate(text, lang). Translate 'good morning' to French. Reply with the function call.",
+        "want": [
+          "translate",
+          "good morning",
+          "french"
+        ],
+        "got": "translate(\"good morning\", \"fr\")",
+        "hit": false
+      }
+    ]
+  }
+}

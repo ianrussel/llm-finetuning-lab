@@ -1,0 +1,60 @@
+{"question": "You can call get_weather(city). Get the weather for Paris. Reply with the function call.", "answers": ["get_weather", "paris"]}
+{"question": "You can call add(a, b). Use it to add 12 and 30. Reply with the function call.", "answers": ["add", "12", "30"]}
+{"question": "You can call send_email(to, subject). Email alice@example.com with subject Hello. Reply with the function call.", "answers": ["send_email", "alice@example.com", "hello"]}
+{"question": "You can call search(query). Search for python tutorials. Reply with the function call.", "answers": ["search", "python tutorials"]}
+{"question": "You can call convert_currency(amount, from, to). Convert 100 USD to EUR. Reply with the function call.", "answers": ["convert_currency", "100", "usd", "eur"]}
+{"question": "You can call set_timer(minutes). Set a timer for 5 minutes. Reply with the function call.", "answers": ["set_timer", "5"]}
+{"question": "You can call get_stock(symbol). Get the stock price for AAPL. Reply with the function call.", "answers": ["get_stock", "aapl"]}
+{"question": "You can call translate(text, lang). Translate 'good morning' to French. Reply with the function call.", "answers": ["translate", "good morning", "french"]}
+{"question": "You can call multiply(a, b). Use it to multiply 7 and 6. Reply with the function call.", "answers": ["multiply", "7", "6"]}
+{"question": "You can call subtract(a, b). Subtract 18 from 50. Reply with the function call.", "answers": ["subtract", "50", "18"]}
+{"question": "You can call divide(a, b). Divide 144 by 12. Reply with the function call.", "answers": ["divide", "144", "12"]}
+{"question": "You can call get_weather(city). Get the weather for Tokyo. Reply with the function call.", "answers": ["get_weather", "tokyo"]}
+{"question": "You can call get_weather(city). Get the weather for London. Reply with the function call.", "answers": ["get_weather", "london"]}
+{"question": "You can call send_sms(to, message). Text 5551234 saying running late. Reply with the function call.", "answers": ["send_sms", "5551234", "running late"]}
+{"question": "You can call create_event(title, date). Create an event titled team sync on 2025-06-01. Reply with the function call.", "answers": ["create_event", "team sync", "2025-06-01"]}
+{"question": "You can call set_alarm(time). Set an alarm for 6:30. Reply with the function call.", "answers": ["set_alarm", "6:30"]}
+{"question": "You can call play_song(title, artist). Play imagine by lennon. Reply with the function call.", "answers": ["play_song", "imagine", "lennon"]}
+{"question": "You can call get_distance(from, to). Get the distance from Paris to Berlin. Reply with the function call.", "answers": ["get_distance", "paris", "berlin"]}
+{"question": "You can call book_flight(from, to). Book a flight from Tokyo to Seoul. Reply with the function call.", "answers": ["book_flight", "tokyo", "seoul"]}
+{"question": "You can call convert_units(value, from, to). Convert 10 km to miles. Reply with the function call.", "answers": ["convert_units", "10", "km", "miles"]}
+{"question": "You can call set_volume(level). Set the volume to 7. Reply with the function call.", "answers": ["set_volume", "7"]}
+{"question": "You can call define(word). Define the word ephemeral. Reply with the function call.", "answers": ["define", "ephemeral"]}
+{"question": "You can call get_time(city). Get the current time in New York. Reply with the function call.", "answers": ["get_time", "new york"]}
+{"question": "You can call calculate_tip(amount, percent). Calculate a 20 percent tip on 50. Reply with the function call.", "answers": ["calculate_tip", "50", "20"]}
+{"question": "You can call send_email(to, subject). Email bob@work.com with subject Invoice. Reply with the function call.", "answers": ["send_email", "bob@work.com", "invoice"]}
+{"question": "You can call add_to_cart(item, quantity). Add 3 notebooks to the cart. Reply with the function call.", "answers": ["add_to_cart", "notebooks", "3"]}
+{"question": "You can call get_stock(symbol). Get the stock price for TSLA. Reply with the function call.", "answers": ["get_stock", "tsla"]}
+{"question": "You can call translate(text, lang). Translate 'thank you' to Spanish. Reply with the function call.", "answers": ["translate", "thank you", "spanish"]}
+{"question": "You can call set_timer(minutes). Set a timer for 15 minutes. Reply with the function call.", "answers": ["set_timer", "15"]}
+{"question": "You can call weather_forecast(city, days). Get a 3 day forecast for Madrid. Reply with the function call.", "answers": ["weather_forecast", "madrid", "3"]}
+{"question": "You can call find_restaurant(cuisine, city). Find an italian restaurant in Rome. Reply with the function call.", "answers": ["find_restaurant", "italian", "rome"]}
+{"question": "You can call convert_currency(amount, from, to). Convert 250 GBP to JPY. Reply with the function call.", "answers": ["convert_currency", "250", "gbp", "jpy"]}
+{"question": "You can call calculate_area(length, width). Calculate the area for length 8 and width 5. Reply with the function call.", "answers": ["calculate_area", "8", "5"]}
+{"question": "You can call get_directions(start, end). Get directions from home to office. Reply with the function call.", "answers": ["get_directions", "home", "office"]}
+{"question": "You can call schedule_meeting(person, time). Schedule a meeting with alice at 14:00. Reply with the function call.", "answers": ["schedule_meeting", "alice", "14:00"]}
+{"question": "You can call set_reminder(task, time). Set a reminder to call mom at 18:00. Reply with the function call.", "answers": ["set_reminder", "call mom", "18:00"]}
+{"question": "You can call power(base, exponent). Raise 2 to the power of 5. Reply with the function call.", "answers": ["power", "2", "5"]}
+{"question": "You can call get_population(country). Get the population of Japan. Reply with the function call.", "answers": ["get_population", "japan"]}
+{"question": "You can call roll_dice(sides). Roll a 20 sided die. Reply with the function call.", "answers": ["roll_dice", "20"]}
+{"question": "You can call send_message(channel, text). Send 'deploy done' to the general channel. Reply with the function call.", "answers": ["send_message", "general", "deploy done"]}
+{"question": "You can call search_flights(from, to, date). Search flights from NYC to LAX on 2025-07-04. Reply with the function call.", "answers": ["search_flights", "nyc", "lax", "2025-07-04"]}
+{"question": "You can call calculate_bmi(weight, height). Calculate BMI for weight 70 and height 1.75. Reply with the function call.", "answers": ["calculate_bmi", "70", "1.75"]}
+{"question": "You can call get_recipe(dish). Get the recipe for lasagna. Reply with the function call.", "answers": ["get_recipe", "lasagna"]}
+{"question": "You can call set_thermostat(degrees). Set the thermostat to 72 degrees. Reply with the function call.", "answers": ["set_thermostat", "72"]}
+{"question": "You can call currency_rate(from, to). Get the rate from USD to CAD. Reply with the function call.", "answers": ["currency_rate", "usd", "cad"]}
+{"question": "You can call word_count(text). Count the words in 'hello world foo'. Reply with the function call.", "answers": ["word_count", "hello world foo"]}
+{"question": "You can call reverse_string(text). Reverse the string 'hello'. Reply with the function call.", "answers": ["reverse_string", "hello"]}
+{"question": "You can call max(a, b). Find the maximum of 88 and 42. Reply with the function call.", "answers": ["max", "88", "42"]}
+{"question": "You can call min(a, b). Find the minimum of 13 and 7. Reply with the function call.", "answers": ["min", "13", "7"]}
+{"question": "You can call round_number(value). Round 3.7. Reply with the function call.", "answers": ["round_number", "3.7"]}
+{"question": "You can call factorial(n). Compute the factorial of 5. Reply with the function call.", "answers": ["factorial", "5"]}
+{"question": "You can call get_news(topic). Get the news about technology. Reply with the function call.", "answers": ["get_news", "technology"]}
+{"question": "You can call create_file(name). Create a file named report.txt. Reply with the function call.", "answers": ["create_file", "report.txt"]}
+{"question": "You can call delete_event(id). Delete the event with id 4521. Reply with the function call.", "answers": ["delete_event", "4521"]}
+{"question": "You can call get_weather(city). Get the weather for Sydney. Reply with the function call.", "answers": ["get_weather", "sydney"]}
+{"question": "You can call calculate_age(birth_year, current_year). Calculate the age for birth year 1990 and current year 2025. Reply with the function call.", "answers": ["calculate_age", "1990", "2025"]}
+{"question": "You can call unit_price(total, quantity). Find the unit price for total 12 and quantity 4. Reply with the function call.", "answers": ["unit_price", "12", "4"]}
+{"question": "You can call send_email(to, subject). Email team@co.com with subject Weekly Update. Reply with the function call.", "answers": ["send_email", "team@co.com", "weekly update"]}
+{"question": "You can call set_timer(minutes). Set a timer for 90 minutes. Reply with the function call.", "answers": ["set_timer", "90"]}
+{"question": "You can call book_table(restaurant, people). Book a table at Luigi for 4 people. Reply with the function call.", "answers": ["book_table", "luigi", "4"]}

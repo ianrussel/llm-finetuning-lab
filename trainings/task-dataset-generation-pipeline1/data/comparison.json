@@ -1,0 +1,43 @@
+{
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "baseline": "base",
+  "conditions": {
+    "base": {
+      "adapter": null,
+      "task": {
+        "n": 200,
+        "accuracy": 0.52,
+        "macro_f1": 0.423007573025604,
+        "valid_label_rate": 1.0
+      },
+      "sentinel": 0.9166666666666666,
+      "reasoning": 0.8,
+      "tools": 0.75
+    },
+    "seed": {
+      "adapter": "phase3_train/lora-seed",
+      "task": {
+        "n": 200,
+        "accuracy": 0.51,
+        "macro_f1": 0.3551783129359126,
+        "valid_label_rate": 1.0
+      },
+      "sentinel": 0.8333333333333334,
+      "reasoning": 0.8,
+      "tools": 0.75
+    },
+    "seed-synth": {
+      "adapter": "phase3_train/lora-seed-synth",
+      "task": {
+        "n": 200,
+        "accuracy": 0.63,
+        "macro_f1": 0.6269785260610949,
+        "valid_label_rate": 1.0
+      },
+      "sentinel": 0.9166666666666666,
+      "reasoning": 1.0,
+      "tools": 0.875
+    }
+  },
+  "missing": []
+}

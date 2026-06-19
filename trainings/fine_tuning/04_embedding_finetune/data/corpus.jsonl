@@ -1,0 +1,18 @@
+{"id": "reset-password", "text": "To reset your password, click Forgot password on the login page and follow the link sent to your email."}
+{"id": "update-card", "text": "You can change the credit card on file under Settings, Billing, Payment method."}
+{"id": "cancel-subscription", "text": "Cancel your plan anytime from Settings, Billing, Cancel subscription. Access continues until the period ends."}
+{"id": "enable-2fa", "text": "Turn on two-factor authentication in Settings, Security to require a one-time code at login."}
+{"id": "export-data", "text": "Export your data as CSV from Settings, Data, Export. Large exports are emailed when ready."}
+{"id": "add-teammate", "text": "Invite a teammate from Settings, Team, Invite member and assign them a role."}
+{"id": "refund-policy", "text": "Refunds are available within 14 days of purchase. Contact billing support to request one."}
+{"id": "mobile-app", "text": "Our mobile app is available for iOS and Android in the respective app stores."}
+{"id": "api-docs", "text": "Developer API documentation, including authentication and endpoints, is at docs.example.com slash api."}
+{"id": "dark-mode", "text": "Enable dark mode from Settings, Appearance, Theme."}
+{"id": "support-hours", "text": "Support is available Monday to Friday, 9am to 6pm in your local time zone."}
+{"id": "change-email", "text": "Change your account email under Settings, Profile, Email, then confirm via the verification link."}
+{"id": "delete-account", "text": "Permanently delete your account from Settings, Privacy, Delete account. This cannot be undone."}
+{"id": "upgrade-plan", "text": "Upgrade or downgrade your plan under Settings, Billing, Change plan."}
+{"id": "slack-integration", "text": "Connect Slack from Settings, Integrations to receive notifications in your channels."}
+{"id": "login-troubleshoot", "text": "If you cannot log in, clear your browser cache, check caps lock, or reset your password."}
+{"id": "invoices", "text": "Download past invoices from Settings, Billing, Invoices."}
+{"id": "notifications", "text": "Manage email and push notifications under Settings, Notifications."}

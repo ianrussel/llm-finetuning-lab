@@ -1,0 +1,6 @@
+# Official MCP Python SDK (FastMCP + the `mcp` CLI / Inspector launcher).
+mcp[cli]>=1.2.0
+
+# Used only by the optional networked example mentioned in module 02 (weather).
+# The course's default servers are offline and do not need it.
+httpx

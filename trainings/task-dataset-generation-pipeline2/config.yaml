@@ -1,0 +1,74 @@
+# The single source of truth for one automated training run + acceptance gate.
+# This is the "configure" step from the brief (section 3.1): a defined, reviewable
+# config, not parameters buried in a script. Edit it, set confirmed: true, then run
+# pipeline.py. propose_config.py can generate a first draft of this file from the data.
+
+name: helpdesk-resolution
+base_model: Qwen/Qwen2.5-0.5B-Instruct
+
+# Part 1 outputs. Paths are resolved relative to THIS folder (pipeline2).
+data:
+  dir: "../task-dataset-generation-pipeline1/data"
+  probes_dir: "../task-dataset-generation-pipeline1/eval"
+  task_train: train_mix.jsonl            # task + replay rehearsal (the real run)
+  task_train_noreplay: train_synth.jsonl # task only, no rehearsal (guardrail control)
+  gold: gold.jsonl
+  labels: labels.txt
+  sentinel: sentinel.jsonl
+  reasoning_probes: reasoning_probes.jsonl
+  tool_probes: tool_probes.jsonl
+
+# LoRA / QLoRA settings (section 3.1).
+lora:
+  rank: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: all-linear
+
+# Training hyperparameters (section 3.2: the config drives the run).
+train:
+  epochs: 6               # upper bound on the budget, not a target; early stopping ends the run sooner
+  learning_rate: 0.0002
+  max_seq_len: 1408
+  batch_size: 1
+  grad_accum: 16
+  use_qlora: true
+  # Adaptive training length (section 3.3): each task trains as long as it needs, no further.
+  # The run scores BOTH axes after every epoch (a clean bf16 re-load of the saved adapter, the
+  # same measurement the gate uses), keeps the best adapter, and stops when a regression axis
+  # falls more than regression_tolerance below its best (forgetting has begun) or task macro-F1
+  # has not improved by min_task_delta for `patience` evals.
+  # Temporarily OFF: validating the clean-eval early stop. With it off, training runs the fixed
+  # `epochs` above (the known-good path). Flip enabled: true to use adaptive length again.
+  early_stopping:
+    enabled: false
+    patience: 2
+    min_task_delta: 0.005
+    regression_tolerance: 0.05   # mirrors acceptance.max_regression_drop below
+    eval_task_limit: 0           # 0 = full gold per epoch, to match the gate exactly
+    eval_batch: 8
+
+# Quality-preservation levers, treated as first-class config (section 3.3).
+guardrails:
+  replay_mix: true        # true -> train on task+replay (train_mix); false -> task only
+  # Documented additional levers (see README) you can wire in as experiments:
+  #   smaller_lr, regularization toward base, early stopping on a general metric, merge.
+
+# The two-axis acceptance gate (section 3.4). The adapter is accepted only if it
+# clears BOTH: task improves by at least min_task_gain AND no regression probe drops
+# by more than max_regression_drop.
+acceptance:
+  min_task_gain_macro_f1: 0.05
+  max_regression_drop: 0.05
+
+# One adjustment to try if the gate rejects (section 3.4: "pipeline adjusts and re-runs").
+adjust_on_fail:
+  force_replay: true       # turn replay on if it was off
+  lower_lr_factor: 0.5     # halve the learning rate
+  reduce_epochs_to: 2      # fewer epochs (a cheap proxy for early stopping)
+
+output_dir: runs           # adapters + result_*.json + report.json land here
+
+# Human-in-the-loop: review everything above, then flip this to true. pipeline.py
+# refuses to run until it is true (the same confirm gate as Part 1's survey).
+confirmed: true

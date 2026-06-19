@@ -1,0 +1,133 @@
+{
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "baseline": "base",
+  "conditions": {
+    "base": {
+      "adapter": null,
+      "task": {
+        "n": 1540,
+        "accuracy": 0.21558441558441557,
+        "macro_f1": 0.20093465954733636,
+        "valid_label_rate": 0.7285714285714285
+      },
+      "sentinel": {
+        "n": 12,
+        "score": 0.9166666666666666
+      }
+    },
+    "seed": {
+      "adapter": "phase3_train/lora-seed",
+      "task": {
+        "n": 1540,
+        "accuracy": 0.5435064935064935,
+        "macro_f1": 0.5336022342971248,
+        "valid_label_rate": 0.9623376623376624
+      },
+      "sentinel": {
+        "n": 12,
+        "score": 0.9166666666666666
+      }
+    },
+    "seed-synth": {
+      "adapter": "phase3_train/lora-seed-synth",
+      "task": {
+        "n": 1540,
+        "accuracy": 0.7701298701298701,
+        "macro_f1": 0.7694546499700486,
+        "valid_label_rate": 0.9902597402597403
+      },
+      "sentinel": {
+        "n": 12,
+        "score": 0.9166666666666666
+      }
+    },
+    "seed-synth-v2": {
+      "adapter": "phase3_train/lora-seed-synth-v2",
+      "task": {
+        "n": 1540,
+        "accuracy": 0.7772727272727272,
+        "macro_f1": 0.7791451090316721,
+        "valid_label_rate": 0.9915584415584415
+      },
+      "sentinel": {
+        "n": 12,
+        "score": 0.8333333333333334
+      }
+    }
+  },
+  "effect_pair": {
+    "from": "seed-synth",
+    "to": "seed-synth-v2"
+  },
+  "effect_per_intent": {
+    "gains": [
+      {
+        "intent": "transfer_not_received_by_recipient",
+        "delta_f1": 0.2982456140350877
+      },
+      {
+        "intent": "card_arrival",
+        "delta_f1": 0.1868421052631577
+      },
+      {
+        "intent": "card_payment_wrong_exchange_rate",
+        "delta_f1": 0.1507936507936508
+      },
+      {
+        "intent": "failed_transfer",
+        "delta_f1": 0.10251542477456099
+      },
+      {
+        "intent": "wrong_exchange_rate_for_cash_withdrawal",
+        "delta_f1": 0.10227272727272707
+      },
+      {
+        "intent": "transfer_timing",
+        "delta_f1": 0.09963674104826159
+      },
+      {
+        "intent": "apple_pay_or_google_pay",
+        "delta_f1": 0.09631019387116957
+      },
+      {
+        "intent": "balance_not_updated_after_cheque_or_cash_deposit",
+        "delta_f1": 0.09538950715421302
+      }
+    ],
+    "regressions": [
+      {
+        "intent": "unable_to_verify_identity",
+        "delta_f1": -0.121409214092141
+      },
+      {
+        "intent": "pending_card_payment",
+        "delta_f1": -0.09473684210526301
+      },
+      {
+        "intent": "getting_spare_card",
+        "delta_f1": -0.08641114982578402
+      },
+      {
+        "intent": "Refund_not_showing_up",
+        "delta_f1": -0.08547008547008539
+      },
+      {
+        "intent": "activate_my_card",
+        "delta_f1": -0.0837320574162681
+      },
+      {
+        "intent": "order_physical_card",
+        "delta_f1": -0.07619047619047614
+      },
+      {
+        "intent": "balance_not_updated_after_bank_transfer",
+        "delta_f1": -0.0675675675675676
+      },
+      {
+        "intent": "get_physical_card",
+        "delta_f1": -0.06621392190152797
+      }
+    ]
+  },
+  "missing": []
+}

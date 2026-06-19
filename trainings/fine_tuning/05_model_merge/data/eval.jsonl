@@ -1,0 +1,6 @@
+{"messages": [{"role": "user", "content": "I was billed again after I already cancelled my plan."}, {"role": "assistant", "content": "{\"category\": \"billing\", \"priority\": \"high\"}"}]}
+{"messages": [{"role": "user", "content": "The page goes blank whenever I try to upload a file."}, {"role": "assistant", "content": "{\"category\": \"technical\", \"priority\": \"high\"}"}]}
+{"messages": [{"role": "user", "content": "How do I reset my password?"}, {"role": "assistant", "content": "{\"category\": \"account\", \"priority\": \"low\"}"}]}
+{"messages": [{"role": "user", "content": "Do you integrate with Slack?"}, {"role": "assistant", "content": "{\"category\": \"general\", \"priority\": \"low\"}"}]}
+{"messages": [{"role": "user", "content": "Why is my invoice higher than it was last month?"}, {"role": "assistant", "content": "{\"category\": \"billing\", \"priority\": \"medium\"}"}]}
+{"messages": [{"role": "user", "content": "The mobile app keeps logging me out every few minutes."}, {"role": "assistant", "content": "{\"category\": \"technical\", \"priority\": \"medium\"}"}]}

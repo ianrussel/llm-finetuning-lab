@@ -1,0 +1,284 @@
+{
+  "name": "seed-synth",
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "adapter": "phase3_train/lora-seed-synth",
+  "task": {
+    "n": 200,
+    "accuracy": 0.63,
+    "macro_f1": 0.6269785260610949,
+    "valid_label_rate": 1.0
+  },
+  "sentinel": {
+    "n": 12,
+    "score": 0.9166666666666666,
+    "probes": [
+      {
+        "q": "What is the capital of France?",
+        "want": [
+          "paris"
+        ],
+        "got": "The capital of France is Paris.",
+        "hit": true
+      },
+      {
+        "q": "What is 7 times 8?",
+        "want": [
+          "56"
+        ],
+        "got": "The answer to the question \"What is 7 times 8?\" is 56.\n\nTo solve this problem, you simply multiply 7 by 8",
+        "hit": true
+      },
+      {
+        "q": "Who wrote the play Romeo and Juliet?",
+        "want": [
+          "shakespeare"
+        ],
+        "got": "The play \"Romeo and Juliet\" was written by William Shakespeare. He lived from 1564 to 1616 and is considered",
+        "hit": true
+      },
+      {
+        "q": "What is the chemical symbol for water?",
+        "want": [
+          "h2o"
+        ],
+        "got": "The chemical symbol for water is H2O.",
+        "hit": true
+      },
+      {
+        "q": "How many continents are there on Earth?",
+        "want": [
+          "7",
+          "seven"
+        ],
+        "got": "There are 5 major continents on Earth: Asia, Africa, North America, South America, and Europe.",
+        "hit": false
+      },
+      {
+        "q": "What planet is known as the Red Planet?",
+        "want": [
+          "mars"
+        ],
+        "got": "<think>\nThe Red Planet refers to Mars, which is also known as the Martian or Martian planet.\n</think>\n\nThe answer is martian.",
+        "hit": true
+      },
+      {
+        "q": "What is the largest ocean on Earth?",
+        "want": [
+          "pacific"
+        ],
+        "got": "The largest ocean on Earth is the Pacific Ocean, which covers an area of approximately 14 million square kilometers (5.4 million square miles). It extends",
+        "hit": true
+      },
+      {
+        "q": "In what year did World War II end?",
+        "want": [
+          "1945"
+        ],
+        "got": "The war ended in 1945 with the signing of the Treaty of Versailles and the subsequent defeat of Nazi Germany. The formal end of the war",
+        "hit": true
+      },
+      {
+        "q": "What gas do plants absorb from the air during photosynthesis?",
+        "want": [
+          "carbon dioxide",
+          "co2"
+        ],
+        "got": "<think>\nPlants absorb carbon dioxide (CO2) from the air during photosynthesis. This process is crucial for their growth and survival as they convert light",
+        "hit": true
+      },
+      {
+        "q": "What is the square root of 144?",
+        "want": [
+          "12"
+        ],
+        "got": "<think>\nThe square root of 144 is 12.\n</think>\n\nThe answer is 12.",
+        "hit": true
+      },
+      {
+        "q": "What language is mainly spoken in Brazil?",
+        "want": [
+          "portuguese"
+        ],
+        "got": "The predominant language spoken in Brazil is Portuguese. It is the official language of the country and is widely used for communication, education, media, and ",
+        "hit": true
+      },
+      {
+        "q": "How do you say 'hello' in Spanish?",
+        "want": [
+          "hola"
+        ],
+        "got": "In Spanish, the phrase \"hello\" is said as \"hola\".",
+        "hit": true
+      }
+    ]
+  },
+  "reasoning": {
+    "n": 10,
+    "score": 1.0,
+    "probes": [
+      {
+        "q": "A train travels 60 km in 1.5 hours. What is its average speed in km/h?",
+        "want": [
+          "40"
+        ],
+        "got": "<think>\nThe train travels a distance of 60 km in 1.5 hours.\nTo find the average speed, we divide the distance traveled by the time taken to travel that distance",
+        "hit": true
+      },
+      {
+        "q": "If a shirt costs 20 dollars and is discounted by 25 percent, what is the sale price in dollars?",
+        "want": [
+          "15"
+        ],
+        "got": "<think>\nThe original price of the shirt is $20.\nThe discount is 25%, which means the customer pays 100% - 25% = 75% of the original price.\nSo, the sale price is",
+        "hit": true
+      },
+      {
+        "q": "Natalia sold 48 clips in April and half as many in May. How many clips did she sell in total?",
+        "want": [
+          "72"
+        ],
+        "got": "<think>\nIn May, Natalia sold half as many clips as in April, which is 1/2 * 48 = <<48/2=24>>24 clips.\nSo Natalia sold a total of 48 + 24 = <<48+24=72>>72 clips.",
+        "hit": true
+      },
+      {
+        "q": "There are 3 boxes with 12 apples each. If 10 apples are removed in total, how many apples remain?",
+        "want": [
+          "26"
+        ],
+        "got": "<think>\nThe total number of apples is 3*12=<<3*12=36>>36.\nIf 10 apples are removed, then there are 36-10=<<36-10=26>>26 remaining.\n</think>\n\nThe answer is 26.",
+        "hit": true
+      },
+      {
+        "q": "A tank holds 200 liters and is 40 percent full. How many liters are in the tank?",
+        "want": [
+          "80"
+        ],
+        "got": "<think>\nThe tank has been filled to 40% of its capacity, which means it's currently holding 80% of its total volume (100% - 40% = 60%). Since the tank holds 200",
+        "hit": true
+      },
+      {
+        "q": "If today is Wednesday, what day of the week will it be in 10 days?",
+        "want": [
+          "saturday"
+        ],
+        "got": "<think>\nGiven that today is Wednesday and we need to determine what day of the week it will be in 10 days, we can calculate this step-by-step.\n\nStarting from to",
+        "hit": true
+      },
+      {
+        "q": "A rectangle is 8 cm long and 5 cm wide. What is its area in square centimeters?",
+        "want": [
+          "40"
+        ],
+        "got": "<think>\nThe area of a rectangle can be calculated using the formula: Area = length × width.\nIn this case, the length is 8 cm and the width is 5 cm, so the area ",
+        "hit": true
+      },
+      {
+        "q": "Sam reads 15 pages a day. How many pages does he read in 2 weeks?",
+        "want": [
+          "210"
+        ],
+        "got": "<think>\nSam reads 15 x 7 = <<15*7=105>>105 pages in one week.\nSo Sam reads 105 x 2 = <<105*2=210>>210 pages in two weeks.\n</think>\n\nThe answer is 210.",
+        "hit": true
+      },
+      {
+        "q": "If 5 workers build a wall in 6 days, how many worker-days does the wall take?",
+        "want": [
+          "30"
+        ],
+        "got": "<think>\nThe total number of worker-days required to build the wall is equal to the total number of workers multiplied by the number of days they worked.\n</think",
+        "hit": true
+      },
+      {
+        "q": "A number doubled and then increased by 3 equals 11. What is the number?",
+        "want": [
+          "4"
+        ],
+        "got": "<think>\nLet's denote the unknown number as x.\nAccording to the problem, when this number is doubled and then increased by 3, it equals 11.\nSo we can write the e",
+        "hit": true
+      }
+    ]
+  },
+  "tools": {
+    "n": 8,
+    "score": 0.875,
+    "probes": [
+      {
+        "q": "You can call get_weather(city). Get the weather for Paris. Reply with the function call.",
+        "want": [
+          "get_weather",
+          "paris"
+        ],
+        "got": "get_weather('Paris')",
+        "hit": true
+      },
+      {
+        "q": "You can call add(a, b). Use it to add 12 and 30. Reply with the function call.",
+        "want": [
+          "add",
+          "12",
+          "30"
+        ],
+        "got": "```python\nadd(12, 30)\n```\n\nThe answer is 42.",
+        "hit": true
+      },
+      {
+        "q": "You can call send_email(to, subject). Email alice@example.com with subject Hello. Reply with the function call.",
+        "want": [
+          "send_email",
+          "alice@example.com",
+          "hello"
+        ],
+        "got": "send_email('alice@example.com', 'Hello')",
+        "hit": true
+      },
+      {
+        "q": "You can call search(query). Search for python tutorials. Reply with the function call.",
+        "want": [
+          "search",
+          "python tutorials"
+        ],
+        "got": "```python\nsearch(\"python tutorials\")\n```",
+        "hit": true
+      },
+      {
+        "q": "You can call convert_currency(amount, from, to). Convert 100 USD to EUR. Reply with the function call.",
+        "want": [
+          "convert_currency",
+          "100",
+          "usd",
+          "eur"
+        ],
+        "got": "convert_currency(100, 'USD', 'EUR')",
+        "hit": true
+      },
+      {
+        "q": "You can call set_timer(minutes). Set a timer for 5 minutes. Reply with the function call.",
+        "want": [
+          "set_timer",
+          "5"
+        ],
+        "got": "```python\nset_timer(5)\n```",
+        "hit": true
+      },
+      {
+        "q": "You can call get_stock(symbol). Get the stock price for AAPL. Reply with the function call.",
+        "want": [
+          "get_stock",
+          "aapl"
+        ],
+        "got": "get_stock('AAPL')",
+        "hit": true
+      },
+      {
+        "q": "You can call translate(text, lang). Translate 'good morning' to French. Reply with the function call.",
+        "want": [
+          "translate",
+          "good morning",
+          "french"
+        ],
+        "got": "```python\ntranslate('good morning', 'en')\n```\n\nThe answer is en.",
+        "hit": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "data": "data/seed.jsonl",
+  "name": "seed",
+  "rows": 16,
+  "epochs": 3.0,
+  "lr": 0.0002,
+  "batch": 1,
+  "grad_accum": 16,
+  "max_len": 1408,
+  "lora_rank": 16,
+  "lora_alpha": 32,
+  "assistant_only_loss": true,
+  "qlora_4bit": true,
+  "dtype": "torch.bfloat16",
+  "seed": 0,
+  "final_train_loss": 2.660891532897949
+}

@@ -1,0 +1,22 @@
+{
+  "name": "helpdesk-resolution-replay",
+  "adapter": "/home/ianrussel/projects/ait-lab/ai_training/trainings/task-dataset-generation-pipeline2/runs/helpdesk-resolution-replay",
+  "task": {
+    "n": 200,
+    "accuracy": 0.51,
+    "macro_f1": 0.4873940788785438,
+    "valid_label_rate": 1.0
+  },
+  "sentinel": {
+    "n": 61,
+    "score": 0.9344262295081968
+  },
+  "reasoning": {
+    "n": 60,
+    "score": 0.8666666666666667
+  },
+  "tools": {
+    "n": 60,
+    "score": 0.8666666666666667
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "data": "/home/ianrussel/projects/ait-lab/ai_training/trainings/task_specific/track_a_banking77/data/train_synth.jsonl",
+  "name": "smoke",
+  "rows": 16,
+  "epochs": 1.0,
+  "lr": 0.0002,
+  "batch": 2,
+  "grad_accum": 8,
+  "max_len": 768,
+  "lora_rank": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "assistant_only_loss": true,
+  "qlora_4bit": true,
+  "dtype": "torch.bfloat16",
+  "seed": 0,
+  "final_train_loss": 0.5930030345916748
+}
