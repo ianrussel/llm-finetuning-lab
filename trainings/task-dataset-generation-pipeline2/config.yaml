@@ -33,15 +33,17 @@ train:
   batch_size: 1
   grad_accum: 16
   use_qlora: true
+  seeds: [0, 1]           # train a couple of seeds; the gate decides on the MEDIAN across seeds,
+                          # so a single noisy run (this config swung 0.501 vs 0.394) cannot flip accept/reject
   # Adaptive training length (section 3.3): each task trains as long as it needs, no further.
   # The run scores BOTH axes after every epoch (a clean bf16 re-load of the saved adapter, the
   # same measurement the gate uses), keeps the best adapter, and stops when a regression axis
   # falls more than regression_tolerance below its best (forgetting has begun) or task macro-F1
   # has not improved by min_task_delta for `patience` evals.
-  # Temporarily OFF: validating the clean-eval early stop. With it off, training runs the fixed
-  # `epochs` above (the known-good path). Flip enabled: true to use adaptive length again.
+  # ON: adaptive length picks the real number of epochs per task within the `epochs` ceiling.
+  # Set enabled: false to train the fixed `epochs` budget instead.
   early_stopping:
-    enabled: false
+    enabled: true
     patience: 2
     min_task_delta: 0.005
     regression_tolerance: 0.05   # mirrors acceptance.max_regression_drop below

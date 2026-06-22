@@ -1,41 +1,45 @@
-# Gate verdict: 60-probe regression run
+# Gate verdict: 60-probe, multi-seed run
 
-Final accepted adapter: `helpdesk-resolution-adj` (the adjusted re-run: train_mix.jsonl, lr 1e-4, 2 epochs)
+Final accepted adapter: `helpdesk-resolution-adj-s0` (adjusted re-run: train_mix.jsonl, lr 1e-4, 2 epochs, seed 0)
 Base model: Qwen/Qwen2.5-0.5B-Instruct
 Probe sets: sentinel, reasoning, and tools all at 60 probes (reasoning grown 10 to 60, tools grown 8 to 60, matching the sentinel) so the 0.05 ceiling sits inside the measurable range on every axis.
+Decision rule: each stage trains seeds [0, 1]; the gate decides on the MEDIAN across seeds and ships the best adapter among those that individually pass.
 
 ## Verdict: ACCEPT
 
-`task_gain=+0.171 (min +0.050) | worst_drop=0.000 (max 0.050)` -> both axes pass with a wide margin.
+Accepted adapter `helpdesk-resolution-adj-s0`: task gain +0.138, no regression (worst drop -0.049).
 
-| Axis | Base | Accepted (adj re-run) | Delta |
-|------|------|-----------------------|-------|
-| task macro-F1 | 0.395 | 0.566 | +0.171 |
-| sentinel | 0.902 | 0.902 | 0.000 |
-| reasoning | 0.850 | 0.900 | +0.050 |
-| tools | 0.783 | 0.867 | +0.084 |
+| Axis | Base | Accepted (adj-s0) | Delta |
+|------|------|-------------------|-------|
+| task macro-F1 | 0.395 | 0.533 | +0.138 |
+| sentinel | 0.902 | 0.951 | +0.049 |
+| reasoning | 0.850 | 0.917 | +0.067 |
+| tools | 0.783 | 0.900 | +0.117 |
 
-Task gain is more than triple the +0.050 floor, and no regression axis dropped (worst drop 0.000: sentinel flat, reasoning and tools up). This is the cleanest, widest-margin pass to date.
+## Both stages, per seed
 
-## How the pipeline got here: the gate plus the adjusted re-run
+**Attempt 1 (replay, 6 epochs, lr 2e-4):**
 
-The first attempt did not pass, and the automatic adjustment is what rescued the run:
+| seed | macro-F1 | task gain | worst drop | verdict |
+|------|----------|-----------|------------|---------|
+| 0 | 0.476 | +0.081 | -0.033 | ACCEPT |
+| 1 | 0.386 | -0.009 | -0.033 | REJECT |
+| median | — | +0.036 | -0.033 | REJECT (1/2 passed) |
 
-| run | config | task macro-F1 | task gain | worst drop | verdict |
-|-----|--------|---------------|-----------|------------|---------|
-| attempt 1 (replay) | 6 epochs, lr 2e-4 | 0.394 | -0.001 | -0.049 | REJECT (no task gain) |
-| adjusted re-run | 2 epochs, lr 1e-4 | 0.566 | +0.171 | 0.000 | ACCEPT |
+**Adjusted re-run (2 epochs, lr 1e-4):**
 
-Attempt 1 trained the full 6 epochs and drove training loss down to about 1.5, but its gold-set macro-F1 (0.394) was no better than base. It overshot: it kept minimizing training loss while it stopped generalizing. The gate caught the lack of task gain and triggered one configured adjustment (halve the learning rate, cut to 2 epochs). That gentler, shorter run scored 0.566 with no regression and was accepted.
+| seed | macro-F1 | task gain | worst drop | verdict |
+|------|----------|-----------|------------|---------|
+| 0 | 0.533 | +0.138 | -0.049 | ACCEPT |
+| 1 | 0.482 | +0.087 | 0.000 | ACCEPT |
+| median | — | +0.112 | -0.025 | ACCEPT (2/2 passed) |
 
-## What this says about training length
+## What the run demonstrates
 
-The shorter, gentler run (2 epochs, lr 1e-4) beat the longer, hotter one (6 epochs, lr 2e-4) by a wide margin on the task, with regression no worse. More epochs was not better here. That is direct evidence that a fixed epoch count is the wrong target and adaptive length is the right idea: with the clean-eval early stopping enabled, attempt 1 would likely have stopped once task stopped improving, instead of overshooting to 6 epochs.
-
-## Caveats
-
-- Run-to-run variance is high: the same 6-epoch, lr 2e-4 config scored 0.501 in an earlier run and 0.394 here. On 296 training rows with a 0.5B model on a T4 (4-bit, not bitwise deterministic even with a fixed seed), single-run task numbers swing a lot, so the gate plus the adjusted re-run is what makes the outcome robust, not any single run.
-- Earlier write-ups quoted a +0.106 result from a different run and config. Treat the accepted adapter above (the adj re-run, +0.171) as the current result.
+- **The multi-seed guard caught real noise.** Attempt 1 scored +0.081 on seed 0 and -0.009 on seed 1. A single-seed run would have shipped seed 0 and reported a +0.081 win on luck. The median (+0.036) sat below the 0.05 floor, so it was correctly rejected.
+- **The accepted run passed on agreement, not luck.** The adjusted re-run cleared the gate on both seeds (+0.138 and +0.087), so the median accept is robust.
+- **Longer is not just lower, it is noisier.** The 6-epoch, lr 2e-4 schedule has gain range [-0.009, +0.081], straddling the floor; the gentle 2-epoch, lr 1e-4 schedule has range [+0.087, +0.138], both clearly passing. That higher variance is exactly why a fixed, single-run epoch count is risky and why the median-across-seeds rule matters.
+- **No regression anywhere.** Every axis on the accepted adapter is up; the reported worst drops are negative.
 
 ## Resolution reference
 

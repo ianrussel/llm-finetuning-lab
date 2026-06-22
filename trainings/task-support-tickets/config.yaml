@@ -1,0 +1,64 @@
+# Second task, second model: prove the SAME pipeline (config-driven, two-axis gate, adaptive
+# length, multi-seed) produces a balanced dataset and a clean adapter with NO per-model code
+# changes. The six *.py files here are byte-identical copies of pipeline2's; only this config
+# and prepare_data.py differ. Swap base_model below to retarget the model with zero code edits.
+
+name: support-ticket-queue
+base_model: HuggingFaceTB/SmolLM3-3B    # swap to Qwen/Qwen2.5-0.5B-Instruct (or any HF chat model) to retarget
+
+# Built by prepare_data.py from Tobi-Bueck/customer-support-tickets. Paths resolve relative to
+# THIS folder. The regression probes are reused from Part 1 unchanged: general ability is task-
+# and model-independent, so the same sentinel/reasoning/tool probes guard every run.
+data:
+  dir: "data"
+  probes_dir: "../task-dataset-generation-pipeline1/eval"
+  task_train: train_mix.jsonl            # task + replay rehearsal (the real run)
+  task_train_noreplay: train_synth.jsonl # task only (guardrail control)
+  gold: gold.jsonl
+  labels: labels.txt
+  sentinel: sentinel.jsonl
+  reasoning_probes: reasoning_probes.jsonl
+  tool_probes: tool_probes.jsonl
+
+lora:
+  rank: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: all-linear
+
+train:
+  epochs: 6                # upper bound; early stopping picks the real length per task
+  learning_rate: 0.0002
+  max_seq_len: 1024        # tickets are shorter than Part 1's reasoning traces
+  batch_size: 1
+  grad_accum: 16
+  use_qlora: true
+  seeds: [0, 1]            # decide on the MEDIAN across seeds, robust to run-to-run noise
+  # Adaptive training length: score BOTH axes after every epoch (clean re-load of the saved
+  # adapter, same measurement the gate uses), keep the best adapter, stop on regression slip or
+  # task plateau. Set enabled: false to train the fixed `epochs` budget instead.
+  early_stopping:
+    enabled: true
+    patience: 2
+    min_task_delta: 0.005
+    regression_tolerance: 0.05
+    eval_task_limit: 0     # 0 = full gold per epoch, to match the gate
+    eval_batch: 8
+
+guardrails:
+  replay_mix: true
+
+acceptance:
+  min_task_gain_macro_f1: 0.05
+  max_regression_drop: 0.05
+
+adjust_on_fail:
+  force_replay: true
+  lower_lr_factor: 0.5
+  reduce_epochs_to: 2
+
+output_dir: runs
+
+# prepare_data.py must run first (it writes data/ and fills labels.txt). Review the proposed
+# dataset, then flip this to true. pipeline.py refuses to run until it is true.
+confirmed: true

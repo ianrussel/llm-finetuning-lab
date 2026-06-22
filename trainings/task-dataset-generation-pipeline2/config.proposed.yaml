@@ -24,12 +24,15 @@ train:
   batch_size: 1
   grad_accum: 16
   use_qlora: true
+  seeds:
+  - 0
+  - 1
   early_stopping:
     enabled: true
-    patience: 1
+    patience: 2
     min_task_delta: 0.005
     regression_tolerance: 0.05
-    eval_task_limit: 96
+    eval_task_limit: 0
     eval_batch: 8
 guardrails:
   replay_mix: true

@@ -48,8 +48,10 @@ def propose(cfg):
     }
     notes.append("early_stopping.enabled=true (train as long as the task needs, then stop)")
 
+    notes.append("seeds=[0, 1] proposed (decide on the median across seeds, robust to run-to-run noise)")
+
     cfg = dict(cfg)
-    cfg["train"] = {**cfg["train"], "epochs": epochs,
+    cfg["train"] = {**cfg["train"], "epochs": epochs, "seeds": cfg["train"].get("seeds", [0, 1]),
                     "early_stopping": {**cfg["train"].get("early_stopping", {}), **early_stopping}}
     cfg["guardrails"] = {**cfg["guardrails"], "replay_mix": True}
     notes.append("replay_mix=true proposed (preserve general + tool ability)")
