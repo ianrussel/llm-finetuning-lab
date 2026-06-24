@@ -66,4 +66,5 @@ output_dir: runs
 
 # prepare_data.py must run first (see README: the Jira dataset needs a one-time download, it is
 # not a one-line HuggingFace load). Review data/labels.txt + data/gold.jsonl, then flip to true.
-confirmed: false
+# Data built from IntelDAOS (9,474 issues) -> 4 balanced types: Bug, Epic, Story, Sub-Task.
+confirmed: true
