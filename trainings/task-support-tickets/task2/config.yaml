@@ -1,0 +1,69 @@
+# Task 2: a third model family + a different corpus, SAME pipeline as task1 (and pipeline2).
+# The six *.py files here are byte-identical copies of task1's; only this config and
+# prepare_data.py differ. Different dataset (public Jira issues) + different model (Gemma 3 4B),
+# no per-model code changes -> model-agnosticism across a third family.
+
+name: jira-issue-type
+base_model: google/gemma-3-4b-it    # third family/tokenizer/template; swap freely (no code edits)
+# NOTE on licence: Gemma is under the Gemma Terms of Use, not an OSI-permissive licence like the
+# Apache/MIT models. Chosen here per request; swap to Phi-4-mini (MIT) or Granite (Apache) to stay
+# fully permissive. Gemma is also gated on HF (accept terms + HF token) and needs transformers >= 4.50.
+
+# Built by prepare_data.py from the public Jira issues dataset (arXiv:2201.08368, Montgomery et al.,
+# "An Alternative Issue Tracking Dataset of Public Jira Repositories"). Task: predict the issue type
+# (Bug / Improvement / New Feature / Task / ...) from summary + description -> closed-label
+# classification, so the proven macro-F1 two-axis gate applies unchanged. Paths resolve relative to
+# THIS folder; regression probes reused from Part 1 (note the ../../ depth, task2 is one level deeper).
+data:
+  dir: "data"
+  probes_dir: "../../task-dataset-generation-pipeline1/eval"
+  task_train: train_mix.jsonl
+  task_train_noreplay: train_synth.jsonl
+  gold: gold.jsonl
+  labels: labels.txt
+  sentinel: sentinel.jsonl
+  reasoning_probes: reasoning_probes.jsonl
+  tool_probes: tool_probes.jsonl
+
+lora:
+  rank: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: all-linear
+
+train:
+  epochs: 6                # upper bound; early stopping picks the real length
+  learning_rate: 0.0002
+  max_seq_len: 1024
+  batch_size: 1
+  grad_accum: 16
+  use_qlora: true
+  seeds: [0, 1]            # gate decides on the MEDIAN across seeds
+  # Adaptive length on. MEMORY: Gemma 4B + per-epoch clean-eval loads a 2nd bf16 copy (~8 GB) next
+  # to the 4-bit training model; on a 16 GB T4 this is tight. If it OOMs, set enabled: false or
+  # lower eval_batch.
+  early_stopping:
+    enabled: true
+    patience: 2
+    min_task_delta: 0.005
+    regression_tolerance: 0.05
+    eval_task_limit: 0
+    eval_batch: 8
+
+guardrails:
+  replay_mix: true
+
+acceptance:
+  min_task_gain_macro_f1: 0.05
+  max_regression_drop: 0.05
+
+adjust_on_fail:
+  force_replay: true
+  lower_lr_factor: 0.5
+  reduce_epochs_to: 2
+
+output_dir: runs
+
+# prepare_data.py must run first (see README: the Jira dataset needs a one-time download, it is
+# not a one-line HuggingFace load). Review data/labels.txt + data/gold.jsonl, then flip to true.
+confirmed: false

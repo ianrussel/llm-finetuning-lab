@@ -1,0 +1,64 @@
+# Third task shape: OPEN-ENDED generation, scored by an LLM judge (not macro-F1).
+# Same config-driven pipeline, multi-seed median, and regression axis as the classification tasks;
+# the task axis is the judge win-rate of the fine-tuned model over the base model. See README.
+
+name: support-reply-drafting
+base_model: Qwen/Qwen2.5-0.5B-Instruct   # the model being fine-tuned (cheap to iterate); swap freely
+
+# The judge: a STRONGER model that compares base vs candidate answers. Loaded in 4-bit after the
+# candidate is freed. Calibrate it against human judgments (calibrate.py) before trusting it.
+judge:
+  model: Qwen/Qwen2.5-7B-Instruct
+  batch: 4
+
+# Built by prepare_data_gen.py from Tobi-Bueck. Regression probes reused from Part 1 unchanged.
+data:
+  dir: "data"
+  probes_dir: "../task-dataset-generation-pipeline1/eval"
+  task_train: train_mix.jsonl
+  task_train_noreplay: train_synth.jsonl
+  gold: gold.jsonl
+  labels: labels.txt          # unused for generation; kept so common_p2 path helpers resolve
+  sentinel: sentinel.jsonl
+  reasoning_probes: reasoning_probes.jsonl
+  tool_probes: tool_probes.jsonl
+
+lora:
+  rank: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: all-linear
+
+train:
+  epochs: 3
+  learning_rate: 0.0002
+  max_seq_len: 1024
+  batch_size: 1
+  grad_accum: 16
+  use_qlora: true
+  seeds: [0, 1]               # gate decides on the median win-rate across seeds
+  # Adaptive length is OFF for v1 of the generative task: the clean-eval early stop scores task
+  # macro-F1, which does not apply here. A ROUGE-vs-reference proxy early stop is the planned
+  # addition; for now train the fixed `epochs` budget and let the judge gate the result.
+  early_stopping:
+    enabled: false
+    eval_batch: 8
+
+guardrails:
+  replay_mix: true
+
+# Generative gate: accept if the judge prefers the fine-tuned answers on at least min_win_rate of
+# held-out tickets AND no regression probe drops more than max_regression_drop.
+acceptance:
+  min_win_rate: 0.55          # > 0.5 means the judge prefers the fine-tuned model over base
+  max_regression_drop: 0.05
+
+adjust_on_fail:
+  force_replay: true
+  lower_lr_factor: 0.5
+  reduce_epochs_to: 2
+
+output_dir: runs
+
+# prepare_data_gen.py must run first. Review data/gold.jsonl, then flip this to true.
+confirmed: true

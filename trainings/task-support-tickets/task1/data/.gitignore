@@ -1,0 +1,7 @@
+# Keep the small PREPARED files in git (labels.txt, gold.jsonl, train_synth.jsonl, train_mix.jsonl,
+# and a hand-made calibration.jsonl if present). Ignore large raw dataset archives / dumps.
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bson

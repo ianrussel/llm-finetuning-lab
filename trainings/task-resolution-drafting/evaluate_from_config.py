@@ -63,7 +63,9 @@ def _probe(model, tok, path, mode, max_new, batch):
     return {"n": len(probes), "score": c.score_probes(raw, probes, mode)}
 
 
-def evaluate(cfg, name, adapter=None, limit=0, batch=16):
+def evaluate(cfg, name, adapter=None, limit=0, batch=None):
+    if batch is None:   # use the same eval batch as early stopping so best-epoch scores like the gate
+        batch = cfg.get("train", {}).get("early_stopping", {}).get("eval_batch", 16)
     labels = c.load_labels(c.data_path(cfg, "labels"))
     gold = c.read_jsonl(c.data_path(cfg, "gold"))
     if limit:
@@ -80,7 +82,7 @@ def evaluate(cfg, name, adapter=None, limit=0, batch=16):
         "macro_f1": c.macro_f1(g, p, labels),
         "valid_label_rate": sum(1 for x in p if x is not None) / len(gold),
     }
-    sentinel = _probe(model, tok, c.probe_path(cfg, "sentinel"), "any", 32, batch)
+    sentinel = _probe(model, tok, c.probe_path(cfg, "sentinel"), "any", 128, batch)
     reasoning = _probe(model, tok, c.probe_path(cfg, "reasoning_probes"), "any", 256, batch)
     tools = _probe(model, tok, c.probe_path(cfg, "tool_probes"), "all", 128, batch)
 
@@ -101,7 +103,7 @@ def main():
     ap.add_argument("--name", default="base")
     ap.add_argument("--adapter", default=None)
     ap.add_argument("--limit", type=int, default=0)
-    ap.add_argument("--batch", type=int, default=16)
+    ap.add_argument("--batch", type=int, default=None)
     args = ap.parse_args()
     cfg = c.load_config()
     evaluate(cfg, args.name, adapter=args.adapter, limit=args.limit, batch=args.batch)

@@ -28,7 +28,8 @@ lora:
 # Training hyperparameters (section 3.2: the config drives the run).
 train:
   epochs: 6               # upper bound on the budget, not a target; early stopping ends the run sooner
-  learning_rate: 0.0002
+  learning_rate: 0.0001   # 1e-4 generalises and is consistent here; 2e-4 overshot and was high-variance
+                          # (3 multi-seed runs: 2e-4 failed the median, the 1e-4 re-run passed 2/2)
   max_seq_len: 1408
   batch_size: 1
   grad_accum: 16
@@ -48,7 +49,7 @@ train:
     min_task_delta: 0.005
     regression_tolerance: 0.05   # mirrors acceptance.max_regression_drop below
     eval_task_limit: 0           # 0 = full gold per epoch, to match the gate exactly
-    eval_batch: 8
+    eval_batch: 16               # match the gate's eval batch so the in-loop "best epoch" is scored identically
 
 # Quality-preservation levers, treated as first-class config (section 3.3).
 guardrails:

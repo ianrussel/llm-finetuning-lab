@@ -35,7 +35,7 @@ import evaluate_from_config as ef
 
 # probe axis -> (config filename key, scoring mode, max_new_tokens); mirrors evaluate_from_config.
 _PROBE_AXES = [
-    ("sentinel", "sentinel", "any", 32),
+    ("sentinel", "sentinel", "any", 128),    # 128 so a reasoning model's answer survives the think block
     ("reasoning", "reasoning_probes", "any", 256),
     ("tools", "tool_probes", "all", 128),
 ]

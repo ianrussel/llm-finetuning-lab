@@ -1,45 +1,50 @@
-# Gate verdict: 60-probe, multi-seed run
+# Gate verdict: 60-probe, multi-seed, adaptive-length run
 
 Final accepted adapter: `helpdesk-resolution-adj-s0` (adjusted re-run: train_mix.jsonl, lr 1e-4, 2 epochs, seed 0)
 Base model: Qwen/Qwen2.5-0.5B-Instruct
-Probe sets: sentinel, reasoning, and tools all at 60 probes (reasoning grown 10 to 60, tools grown 8 to 60, matching the sentinel) so the 0.05 ceiling sits inside the measurable range on every axis.
-Decision rule: each stage trains seeds [0, 1]; the gate decides on the MEDIAN across seeds and ships the best adapter among those that individually pass.
+This is the full-stack run: 60-probe regression axis, clean-eval early stopping (adaptive length), and the median across two seeds, all together.
 
 ## Verdict: ACCEPT
 
-Accepted adapter `helpdesk-resolution-adj-s0`: task gain +0.138, no regression (worst drop -0.049).
+Accepted adapter `helpdesk-resolution-adj-s0`: task gain +0.154, regression within tolerance (worst drop 0.049).
 
 | Axis | Base | Accepted (adj-s0) | Delta |
 |------|------|-------------------|-------|
-| task macro-F1 | 0.395 | 0.533 | +0.138 |
-| sentinel | 0.902 | 0.951 | +0.049 |
-| reasoning | 0.850 | 0.917 | +0.067 |
-| tools | 0.783 | 0.900 | +0.117 |
+| task macro-F1 | 0.395 | 0.549 | +0.154 |
+| sentinel | 0.902 | 0.852 | -0.050 (at the edge) |
+| reasoning | 0.850 | 0.883 | +0.033 |
+| tools | 0.783 | 0.883 | +0.100 |
+
+Big task gain. Honest note: the chosen seed's sentinel dropped to the 0.05 edge (worst drop 0.049, just inside the ceiling). The other passing seed (`adj-s1`) was cleaner on regression (worst drop 0.016) but lower on task (+0.065); the chooser ships the highest task gain among the seeds that pass, which is `adj-s0`.
 
 ## Both stages, per seed
 
 **Attempt 1 (replay, 6 epochs, lr 2e-4):**
 
-| seed | macro-F1 | task gain | worst drop | verdict |
-|------|----------|-----------|------------|---------|
-| 0 | 0.476 | +0.081 | -0.033 | ACCEPT |
-| 1 | 0.386 | -0.009 | -0.033 | REJECT |
-| median | — | +0.036 | -0.033 | REJECT (1/2 passed) |
+| seed | best epoch | macro-F1 | task gain | worst drop | verdict |
+|------|------------|----------|-----------|------------|---------|
+| 0 | 2 | 0.411 | +0.016 | -0.033 | REJECT |
+| 1 | 1 | 0.460 | +0.065 | +0.016 | ACCEPT |
+| median | — | — | +0.040 | -0.008 | REJECT (1/2 passed) |
 
 **Adjusted re-run (2 epochs, lr 1e-4):**
 
-| seed | macro-F1 | task gain | worst drop | verdict |
-|------|----------|-----------|------------|---------|
-| 0 | 0.533 | +0.138 | -0.049 | ACCEPT |
-| 1 | 0.482 | +0.087 | 0.000 | ACCEPT |
-| median | — | +0.112 | -0.025 | ACCEPT (2/2 passed) |
+| seed | best epoch | macro-F1 | task gain | worst drop | verdict |
+|------|------------|----------|-----------|------------|---------|
+| 0 | 2 | 0.549 | +0.154 | 0.049 | ACCEPT |
+| 1 | 2 | 0.460 | +0.065 | 0.016 | ACCEPT |
+| median | — | — | +0.109 | 0.033 | ACCEPT (2/2 passed) |
 
-## What the run demonstrates
+## What this run validated
 
-- **The multi-seed guard caught real noise.** Attempt 1 scored +0.081 on seed 0 and -0.009 on seed 1. A single-seed run would have shipped seed 0 and reported a +0.081 win on luck. The median (+0.036) sat below the 0.05 floor, so it was correctly rejected.
-- **The accepted run passed on agreement, not luck.** The adjusted re-run cleared the gate on both seeds (+0.138 and +0.087), so the median accept is robust.
-- **Longer is not just lower, it is noisier.** The 6-epoch, lr 2e-4 schedule has gain range [-0.009, +0.081], straddling the floor; the gentle 2-epoch, lr 1e-4 schedule has range [+0.087, +0.138], both clearly passing. That higher variance is exactly why a fixed, single-run epoch count is risky and why the median-across-seeds rule matters.
-- **No regression anywhere.** Every axis on the accepted adapter is up; the reported worst drops are negative.
+- **Adaptive length (clean-eval early stopping).** Per-epoch scores match the gate scale (no 4-bit noise). It kept different best epochs per seed and stopped early instead of running all 6.
+- **Patience 2.** Attempt-1 s0 task went 0.436, 0.452, 0.423, 0.411: it did not bail on the first dip at epoch 3, it waited two evals and stopped at epoch 4 keeping the peak (epoch 2). Exactly the "task can climb after a dip" behaviour.
+- **Tolerance epsilon.** Attempt-1 s1 epoch 3 hit a regression drop of exactly 0.050; it is now tolerated (the stop reason is the task plateau, not a false regression trip).
+- **Median across seeds.** Rejected attempt 1 (median +0.040, 1/2) and accepted the re-run (median +0.109, 2/2), so no single noisy seed flips the verdict.
+
+## The learning-rate finding (config change)
+
+Across three multi-seed runs, the 6-epoch / lr 2e-4 attempt failed the median and the lr 1e-4 adjusted re-run passed 2/2. Early stopping already trims the hot run to ~2 effective epochs, so the difference is the learning rate: 2e-4 overshoots and is high-variance, 1e-4 generalises and is consistent. The config default `learning_rate` is now **1e-4** so attempt 1 uses the winning rate directly, instead of always needing the re-run.
 
 ## Resolution reference
 

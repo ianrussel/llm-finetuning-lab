@@ -1,0 +1,13 @@
+# Keep the small PREPARED files in git: labels.txt, gold.jsonl, train_synth.jsonl, train_mix.jsonl
+# Ignore the large RAW dataset (download archive + the unprocessed dump/export).
+
+# dataset archives / dumps
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bson
+
+# the raw input you feed prepare_data.py (large); the prepared *.jsonl outputs stay tracked
+jira_issues.jsonl
+jira_issues.json

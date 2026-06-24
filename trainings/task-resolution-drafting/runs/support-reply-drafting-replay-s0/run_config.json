@@ -1,0 +1,17 @@
+{
+  "run_name": "support-reply-drafting-replay-s0",
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "data": "/home/ianrussel/projects/ait-lab/ai_training/trainings/task-resolution-drafting/data/train_mix.jsonl",
+  "max_epochs": 3,
+  "lr": 0.0002,
+  "seed": 0,
+  "max_len": 1024,
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": "all-linear"
+  },
+  "final_train_loss": 1.2468988355249166,
+  "early_stopping": false
+}
