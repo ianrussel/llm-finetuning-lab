@@ -34,10 +34,35 @@ pip install -U "transformers>=4.50" datasets
 ../../../.venv/bin/python pipeline.py            # same gate loop, now on Gemma 3 4B + Jira
 ```
 
+Per-model wrinkles hit while swapping families (gating, multimodal, chat-template assistant masking,
+reasoning-model probe budget, memory) are documented once in [../MODEL_NOTES.md](../MODEL_NOTES.md).
+This task uses Phi-4-mini (MIT, ungated) with `assistant_only_loss: false` because its chat template
+lacks the `{% generation %}` markers TRL needs; see that doc for the why.
+
+## Third axis: knowledge absorption (a touch, not a gate)
+
+Next to the task and regression axes, a light check of whether the fine-tune absorbed DAOS *domain*
+knowledge. The Jira `components` field (Control Plane, Erasure Code, Rebuild, ...) is a domain fact
+distinct from the task label (issue type), so it does not just re-measure the task.
+
+```
+../../../.venv/bin/python build_knowledge.py                 # held-out, decontaminated Q&A set (CPU)
+../../../.venv/bin/python knowledge.py --adapter runs/jira-issue-type-replay-s1   # closed-book, GPU
+```
+
+- `build_knowledge.py` turns issues that are NOT in train/gold into ~40 closed-book questions
+  ("which component does this issue affect?"), decontaminated against the exact training text, scored
+  with `any`-match (naming any correct component counts).
+- `knowledge.py` scores base vs fine-tuned closed-book (no retrieval) and reports
+  `knowledge_gain = fine-tuned - base` into `runs/knowledge.json`. Positive means some domain
+  knowledge stuck; near-zero is the expected, acceptable outcome for a small classification
+  fine-tune. It is **reported alongside the gate, never used to accept or reject** (it is a touch,
+  not the main goal). The same pair of scripts works for any task by pointing at its corpus.
+
 ## Notes and caveats
 
 - **Licence.** Gemma is under the Gemma Terms of Use, not an OSI-permissive licence like the
-  Apache/MIT models Franz preferred. Chosen here per request. To stay fully permissive, swap
+  Apache/MIT models preferred for this work. Chosen here per request. To stay fully permissive, swap
   `base_model` to `microsoft/Phi-4-mini-instruct` (MIT) or an `ibm-granite` model (Apache), no code
   change.
 - **Memory.** Gemma 3 4B trains in 4-bit, but the clean-eval early stopping loads a second bf16 copy
