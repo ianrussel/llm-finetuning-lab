@@ -1,5 +1,9 @@
 # Generalisation result: same pipeline, new model + new task
 
+This is the **task 1** record (SmolLM3-3B + Tobi-Bueck queue routing). Task 2 (Phi-4-mini + Jira
+issue types) has its own writeup at [task2/WRITEUP.md](task2/WRITEUP.md). Together they show the
+pipeline holding across three model families (Qwen in pipeline2, SmolLM3 here, Phi-4-mini in task2).
+
 The question was whether the Part 2 pipeline only works for the one binary task and the one model
 it was built on, or is actually general. This run answers it: the **same pipeline** (config-driven
 training, two-axis gate, adaptive length, multi-seed median) produced a balanced dataset and a
@@ -46,8 +50,8 @@ gate; seed 1's epoch-1 read 0.204 and 0.204). Both numbers used to drift with ba
 
 ## Caveats
 
-- **Absolute task score is low** (0.228). Queue routing over about ten classes with 40 examples
-  each is hard, and the gate measures gain (+0.117, a clean pass), not absolute accuracy. More data
+- **Absolute task score is low** (0.247). Queue routing over about ten classes with 40 examples
+  each is hard, and the gate measures gain (+0.124, a clean pass), not absolute accuracy. More data
   or epochs would raise the absolute number.
 - **Runtime is long:** seed 1 took about four hours (3B model plus the per-epoch clean-eval). The
   0.5B Qwen pipeline2 is far cheaper for iterating; the 3B is the proof, not the daily driver.

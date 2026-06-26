@@ -1,6 +1,6 @@
 """Calibrate the LLM judge against your own human judgments before trusting it.
 
-Franz's rule: know the judge tracks a person before letting it gate. You hand-judge a handful of
+The rule: know the judge tracks a person before letting it gate. You hand-judge a handful of
 (ticket, reply A, reply B) triples, then this runs the SAME judge on them and reports agreement.
 If agreement is high, the win-rate the gate uses is meaningful; if not, fix the judge prompt or
 pick a stronger judge before relying on it.

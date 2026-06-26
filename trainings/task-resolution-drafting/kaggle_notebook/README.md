@@ -47,7 +47,7 @@ Run all cells top to bottom:
 ## Notes and gotchas
 
 - **Calibrate first.** The win-rate is only trustworthy once the judge tracks your judgments
-  (cell 7). This is Franz's rule, build the calibration habit before relying on the gate.
+  (cell 7). This is the rule: build the calibration habit before relying on the gate.
 - **Memory.** The 0.5B base trains in 4-bit; the 7B judge loads in 4-bit only after the trained
   models are freed, and once per stage, so only one large model is resident at a time. Fits a T4.
 - **Adaptive length is off for v1.** The clean-eval early stop scores macro-F1, which does not apply
