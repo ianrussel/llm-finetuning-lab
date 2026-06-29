@@ -55,16 +55,22 @@ each sequence, so this dilutes the task signal a little, yet the gain (+0.24) wa
 All fixes are **config or model choice, never pipeline code**. See `../MODEL_NOTES.md` for the
 running list of per-model wrinkles.
 
-## Adaptive length is off for this model (by config)
+## Adaptive length is off for this model (both in-loop eval modes fail on a free T4)
 
-Early stopping is disabled for Phi-4-mini on a free T4. The clean-eval early stop loads a **second
-bf16 copy** of the model each epoch to score the saved adapter, and a 3.8B second copy does not fit
-beside the 4-bit training model on a 16 GB T4 (an earlier run with it on OOM'd every epoch and fell
-back to fixed epochs anyway). So `early_stopping.enabled: false` here: the run trains the fixed
-`epochs` budget cleanly, and the gate plus the multi-seed median do the accept/reject. Adaptive
-length stays on for the small Qwen (pipeline2), where the second copy fits. The general fix, noted
-for later, is a lighter in-loop eval that scores the adapter without a separate base copy, which
-would let adaptive length work on 4B+ too.
+Early stopping needs to run the model each epoch, and neither mode fits a 3.8B on a free 16 GB T4,
+so it is disabled here and the run trains the fixed `epochs` budget:
+
+- `eval_mode: clean` loads a **second bf16 copy** to score the saved adapter; a 3.8B second copy does
+  not fit beside the 4-bit trainer and OOMs every epoch.
+- `eval_mode: resident` reuses the in-training model (no second copy), but batched `generate()` on
+  the live QLoRA model throws a tensor-size mismatch on Phi-4 (the in-training model is not a clean
+  inference model). It errored every epoch.
+
+Both were tried; both degraded gracefully (caught the error, logged "eval skipped", kept training),
+so the run still completed as fixed-epoch and the **gate + multi-seed median accepted 2/2**. Adaptive
+length stays on for the small Qwen (pipeline2), where `clean` fits and matches the gate. Getting it
+on 3.8B+ needs more VRAM or an in-loop signal that needs neither a second copy nor `generate()` on
+the live model (e.g. held-out eval loss) — noted, not built. See `../MODEL_NOTES.md`.
 
 ## Third axis: knowledge absorption (a touch)
 

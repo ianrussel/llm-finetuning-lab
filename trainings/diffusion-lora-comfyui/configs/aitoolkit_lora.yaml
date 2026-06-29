@@ -1,0 +1,71 @@
+# AI-Toolkit (ostris/ai-toolkit) image LoRA config, annotated for OPTIMIZATION.
+# Every knob below has a quality / speed / cost effect called out, because tuning these is the job.
+# Run with AI-Toolkit:  python run.py configs/aitoolkit_lora.yaml   (paths are examples, edit them)
+# AI-Toolkit's schema evolves; treat this as a known-good shape and check the tool's current examples.
+
+job: extension
+config:
+  name: "tk_emblem_lora_v1"          # bump the suffix per sweep run so outputs do not overwrite
+  process:
+    - type: "sd_trainer"
+      training_folder: "output"      # adapters + samples land here, one subfolder per `name`
+      device: "cuda:0"
+
+      network:
+        type: "lora"
+        linear: 16                   # RANK. Capacity of the LoRA. Higher = learns more detail but
+                                     #   overfits faster, larger file, a touch slower. Sweep 4/8/16/32.
+        linear_alpha: 16             # ALPHA. Effective LR scale = alpha/rank. Common: alpha == rank,
+                                     #   or alpha = rank/2 for a gentler effect. Sweep with rank.
+
+      save:
+        dtype: "float16"
+        save_every: 250              # checkpoint cadence (steps); lets you pick the best, not the last
+        max_step_saves_to_keep: 4
+
+      datasets:
+        - folder_path: "../datasets/concept"   # image+caption pairs from make_dataset.py
+          caption_ext: "txt"
+          caption_dropout_rate: 0.05  # REGULARISATION. Randomly drop the caption so the concept is not
+                                      #   over-bound to exact words. 0.0-0.1; raise if it ignores prompts.
+          shuffle_tokens: false
+          cache_latents_to_disk: true # SPEED. Encode images to latents once, reuse every epoch.
+          resolution: [512, 768, 1024]# multi-res buckets; lower = faster/cheaper, higher = more detail/VRAM
+
+      train:
+        batch_size: 1                 # SPEED/VRAM. Raise if VRAM allows; else use gradient_accumulation.
+        gradient_accumulation_steps: 1# effective batch = batch_size * accum, without the VRAM of a big batch
+        steps: 2000                   # LENGTH. Too few = underfit, too many = overfit/burn cost. Sweep
+                                      #   1000/2000/3000 and pick by samples, not by loss.
+        train_unet: true
+        train_text_encoder: false     # usually false for concept LoRA; true can help style but risks drift
+        gradient_checkpointing: true  # SPEED<->VRAM trade: ~20-30% slower, big VRAM saving. Keep on for big bases.
+        noise_scheduler: "flowmatch"  # match the base model family (flowmatch for FLUX/SD3-style)
+        optimizer: "adamw8bit"        # COST. 8-bit optimizer ~halves optimizer VRAM at ~no quality loss.
+        lr: 1e-4                      # LEARNING RATE. The single most important knob. Too high = artefacts/
+                                      #   burn, too low = nothing learned. Sweep 5e-5 / 1e-4 / 2e-4.
+        lr_scheduler: "constant"      # "constant" is a strong default; "cosine" can squeeze a bit more.
+                                      #   Add warmup (lr_warmup_steps) for high LR.
+        dtype: "bf16"                 # bf16 training; stable + fast on modern GPUs
+        ema_config:
+          use_ema: true               # QUALITY. Exponential moving average of weights = smoother result.
+          ema_decay: 0.99
+
+      model:
+        name_or_path: "black-forest-labs/FLUX.1-dev"  # swap to your base (SDXL, SD3.5, Z-Image, ...)
+        is_flux: true                 # set the family flag to match the base
+        quantize: true                # COST. Quantize the frozen base (e.g. to fit FLUX on a 24 GB card).
+
+      sample:
+        sampler: "flowmatch"
+        sample_every: 250             # render fixed prompts during training -> watch it learn / overfit
+        width: 1024
+        height: 1024
+        seed: 42                      # FIX the seed + prompts across every sweep run, so eval/compare.py
+        walk_seed: true               #   compares like-for-like (same seed, same prompt, different config)
+        guidance_scale: 4
+        sample_steps: 20
+        prompts:                      # keep this list FIXED for the whole project = your eval set
+          - "a photo of tk-emblem, a circular emblem, on a plain studio backdrop"
+          - "a photo of tk-emblem on a wooden desk, soft daylight"
+          - "tk-emblem logo on a black t-shirt, product photo"

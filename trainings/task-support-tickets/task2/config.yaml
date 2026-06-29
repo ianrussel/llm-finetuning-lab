@@ -40,12 +40,14 @@ train:
   grad_accum: 16
   use_qlora: true
   seeds: [0, 1]            # gate decides on the MEDIAN across seeds
-  # Adaptive length is OFF here: the per-epoch clean-eval loads a 2nd bf16 copy of the model, which
-  # does not fit beside the 4-bit trainer on a 16 GB T4 for a 3.8B model (it OOM'd every epoch and
-  # fell back to fixed epochs anyway). So we train the fixed `epochs` budget cleanly. Turn it back on
-  # only with more VRAM, or on the small Qwen where the second copy fits.
+  # Adaptive length is OFF for this 3.8B on a free T4. Both in-loop eval modes fail here: "clean"
+  # loads a 2nd bf16 copy and OOMs; "resident" scores the in-training model but batched generate()
+  # throws a tensor-size mismatch on Phi-4 (the live QLoRA model is not a clean inference model). So
+  # we train the fixed `epochs` budget; the gate + multi-seed median do accept/reject (reliable, and
+  # it accepted 2/2). Adaptive length stays on for the small Qwen (pipeline2) where clean-eval fits.
   early_stopping:
     enabled: false
+    eval_mode: resident
     patience: 2
     min_task_delta: 0.005
     regression_tolerance: 0.05

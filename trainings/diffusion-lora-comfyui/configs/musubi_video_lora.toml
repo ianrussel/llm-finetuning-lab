@@ -1,0 +1,53 @@
+# Musubi Tuner (kohya-ss/musubi-tuner) dataset config for VIDEO LoRA (Wan 2.2 / LTX / Hunyuan-style).
+# Musubi splits config: this TOML defines the DATA; the trainer hyperparameters are CLI args (below).
+# Exact task/module names move fast in this repo, so verify against musubi-tuner's current docs.
+
+[general]
+resolution = [960, 544]        # [W, H]; lower = much cheaper for video. Bucket-friendly.
+caption_extension = ".txt"
+batch_size = 1                 # video is VRAM-heavy; start at 1 and use accumulation on the CLI
+enable_bucket = true           # group by aspect ratio instead of hard-cropping
+bucket_no_upscale = true
+
+# An image-only dataset (warm up the concept cheaply before video) ---------------------------------
+[[datasets]]
+image_directory = "../datasets/concept"
+cache_directory = "../datasets/.cache_img"   # latents cached here; reused across runs (SPEED)
+num_repeats = 1
+
+# A video dataset (your own short clips + caption .txt per clip) ------------------------------------
+# [[datasets]]
+# video_directory = "../datasets/clips"
+# cache_directory = "../datasets/.cache_vid"
+# target_frames = [25]         # frames per sample; fewer = cheaper. Match the model's window.
+# frame_extraction = "head"
+# num_repeats = 1
+
+# --------------------------------------------------------------------------------------------------
+# TRAINING COMMAND (the knobs you optimize live here, not in this file). Example shape for Wan:
+#
+#   accelerate launch --num_processes 1 wan_train_network.py \
+#     --task t2v-14B \                         # the model/task variant
+#     --dit /models/wan2.2/dit.safetensors \
+#     --vae /models/wan2.2/vae.safetensors \
+#     --t5  /models/wan2.2/t5.safetensors \
+#     --dataset_config musubi_video_lora.toml \
+#     --network_module networks.lora_wan \
+#     --network_dim 32 \                       # RANK (capacity) — sweep 16/32/64
+#     --network_alpha 16 \                     # ALPHA (alpha/dim = LR scale)
+#     --learning_rate 2e-4 \                   # LR — the main knob; sweep 1e-4/2e-4
+#     --optimizer_type adamw8bit \             # 8-bit optimizer = lower VRAM/cost
+#     --lr_scheduler constant \                # or cosine; add warmup at higher LR
+#     --max_train_epochs 16 \                  # length; pick by samples, not loss
+#     --gradient_accumulation_steps 4 \        # effective batch without the VRAM
+#     --gradient_checkpointing \               # VRAM saver (slower) — usually required for video
+#     --mixed_precision bf16 \
+#     --fp8_base \                             # quantize the frozen base to fit big video models
+#     --blocks_to_swap 16 \                    # OFFLOAD: swap N transformer blocks to CPU = less VRAM, slower
+#     --save_every_n_epochs 2 --sample_every_n_epochs 2 \
+#     --output_dir output --output_name wan_concept_lora_v1
+#
+# Optimization levers (the whole job): network_dim/alpha (capacity vs overfit), learning_rate +
+# scheduler (the core), gradient_accumulation vs batch_size (throughput vs VRAM),
+# gradient_checkpointing + fp8_base + blocks_to_swap (fit bigger models / lower cost), cache_directory
+# (encode once, reuse). Change ONE at a time, render fixed prompts/seeds, compare with eval/compare.py.

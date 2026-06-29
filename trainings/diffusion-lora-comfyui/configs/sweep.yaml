@@ -1,0 +1,53 @@
+# Hyperparameter sweep plan for the LoRA-optimization milestone.
+# Method: change ONE knob at a time from the baseline (aitoolkit_lora.yaml), keep the sample prompts
+# and seeds FIXED, render, then compare with eval/compare.py. Record a one-line finding per run.
+# This one-knob discipline is what lets you say "rank 16 -> 32 improved detail but overfit by step
+# 2500" with evidence, which is exactly the before/after the application asks for.
+
+baseline:
+  rank: 16
+  alpha: 16
+  lr: 1.0e-4
+  scheduler: constant
+  steps: 2000
+  caption_dropout_rate: 0.05
+
+# Each entry = one run. name -> the config `name` you set so outputs do not collide.
+runs:
+  - name: base                 # the baseline, your "before"
+    change: none
+
+  - name: rank8
+    change: { rank: 8, alpha: 8 }
+    hypothesis: "lower capacity -> less overfit, maybe softer detail"
+  - name: rank32
+    change: { rank: 32, alpha: 16 }
+    hypothesis: "more capacity -> sharper concept, watch for overfit/artefacts"
+
+  - name: lr_low
+    change: { lr: 5.0e-5 }
+    hypothesis: "gentler LR -> cleaner but may underfit at 2000 steps"
+  - name: lr_high
+    change: { lr: 2.0e-4 }
+    hypothesis: "faster learning -> fewer steps needed, risk of burn/artefacts"
+
+  - name: cosine
+    change: { scheduler: cosine }
+    hypothesis: "cosine decay -> slightly better final quality than constant"
+
+  - name: steps3000
+    change: { steps: 3000 }
+    hypothesis: "longer -> more faithful, but find the overfit point from the 250-step samples"
+
+  - name: capdrop15
+    change: { caption_dropout_rate: 0.15 }
+    hypothesis: "more regularisation -> better prompt-following, less concept bleed"
+
+# After the quality winner is found, the speed/cost pass (milestone 4) varies, on the BEST config:
+speed_cost_levers:
+  - optimizer: adamw8bit         # vs adamw: ~half optimizer VRAM
+  - gradient_checkpointing: true # slower/step, big VRAM saving
+  - cache_latents_to_disk: true  # encode once, reuse
+  - quantize_base: true          # fit a bigger base on the same card
+  - batch_vs_accum: "raise batch_size if VRAM allows, else gradient_accumulation_steps"
+  # record: steps/sec, peak VRAM (GB), and the quality delta vs the quality winner

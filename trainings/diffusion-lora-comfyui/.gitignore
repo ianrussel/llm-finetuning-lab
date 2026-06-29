@@ -1,0 +1,10 @@
+# generated comparison output + sweep render folders
+eval/report/
+eval/runs/
+runs/
+# trainer/latent caches
+datasets/.cache*
+**/output/
+# your own raw images (can be large); keep the convention note
+datasets/raw/*
+!datasets/raw/README.md

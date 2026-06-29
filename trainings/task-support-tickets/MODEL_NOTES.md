@@ -53,11 +53,20 @@ access step, or a version bump, never a change to the pipeline logic.
 
 ## 6. Memory on a free T4 (3B and 4B models)
 
-- **Symptom:** CUDA OOM, often during an `[early-stop]` epoch.
-- **Cause:** the clean-eval early stopping loads a second bf16 copy of the model each epoch (the 3B
-  is ~6 GB, the 4B ~8 GB) next to the 4-bit training model. Tight on a 16 GB T4.
-- **Fix:** set `early_stopping.enabled: false` (no second-model reload), lower `eval_batch`, or use a
-  smaller base model. The 0.5B Qwen is the cheap one for iterating; the 3B/4B are the proof runs.
+- **Symptom:** per-epoch `[early-stop]` either CUDA-OOMs or throws a tensor-size mismatch.
+- **Cause:** the in-loop eval needs to run the model each epoch, and neither mode fits a 3.8B/4B on a
+  free 16 GB T4: `eval_mode: clean` loads a second bf16 copy (3B ~6 GB, 4B ~8 GB) beside the 4-bit
+  trainer and OOMs; `eval_mode: resident` reuses the in-training model (no second copy) but batched
+  `generate()` on the live QLoRA model throws a size mismatch (observed on Phi-4: the in-training
+  model is not a clean inference model). Both were tried on Phi-4-3.8B; both failed, and the callback
+  degraded gracefully to fixed epochs each time.
+- **Practical fix:** for 3.8B+ on a free T4, set `early_stopping.enabled: false` and rely on the gate
+  + multi-seed median (reliable; it accepted 2/2). Adaptive length is worth it on small models (the
+  0.5B Qwen, `eval_mode: clean`) where the second copy fits and matches the gate exactly.
+- **To actually get adaptive length on big models** you need more VRAM, or an in-loop signal that
+  needs neither a second copy nor `generate()` on the live model, e.g. held-out eval **loss** (a
+  forward pass) for the task-plateau signal. Not built yet; the eval modes (`clean`/`resident`) are
+  the two `early_stopping.eval_mode` options today.
 
 ## Summary
 
